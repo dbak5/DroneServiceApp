@@ -1,0 +1,29 @@
+﻿<Window x:Class="DroneServiceApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid >
+        <ListView d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,631,0" Width="NaN">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBox x:Name="TextBoxName" HorizontalAlignment="Left" Margin="309,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBoxModel" HorizontalAlignment="Left" Margin="309,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBoxProblem" HorizontalAlignment="Left" Margin="309,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBoxCost" HorizontalAlignment="Left" Margin="309,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="LabelName" Content="Client Name" HorizontalAlignment="Left" Margin="201,27,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LabelModel" Content="Drone Model" HorizontalAlignment="Left" Margin="201,67,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LabelProblem" Content="Service Problem" HorizontalAlignment="Left" Margin="201,104,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LabelCost" Content="Service Cost" HorizontalAlignment="Left" Margin="201,138,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.092,-0.329"/>
+        <Label x:Name="LabelTag" Content="Service Tag" HorizontalAlignment="Left" Margin="201,175,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="RadioButtonRegular" Content="Regular" HorizontalAlignment="Left" Margin="309,180,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.832,0.776"/>
+        <RadioButton x:Name="RadioButtonExpress" Content="Express" HorizontalAlignment="Left" Margin="309,0,0,0" VerticalAlignment="Center"/>
+
+    </Grid>
+</Window>
