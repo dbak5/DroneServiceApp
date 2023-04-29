@@ -44,6 +44,7 @@ namespace DroneServiceApp
         public void SetClientName(string newClientName)
         {
             ClientName = newClientName;
+            // capitalisaing can be done here
         }
 
         public string GetClientName()
@@ -74,6 +75,8 @@ namespace DroneServiceApp
         public void SetServiceCost(double newServiceCost)
         {
             ServiceCost = newServiceCost;
+            // validation for negatives can be done here
+            // 15% extra cost here for express
         }
 
         public double GetServiceCost()

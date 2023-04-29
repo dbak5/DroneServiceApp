@@ -50,17 +50,15 @@
             </Grid.RowDefinitions>
 
             <Label x:Name="LabelName" Grid.Column="0" Grid.Row="0" Content="Client Name" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxName" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120"/>
+            <TextBox x:Name="TextBoxName" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" TextAlignment="Right"/>
 
             <Label x:Name="LabelModel" Grid.Column="0" Grid.Row="1" Content="Drone Model"  VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxModel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120"/>
+            <TextBox x:Name="TextBoxModel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" TextAlignment="Right"/>
 
-            <Label x:Name="LabelServiceTag" Content="Service Tag" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" />
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" x:Name="ServiceTagUpDown" HorizontalAlignment="Right"  Width="120" Height="19"
-                                Minimum="100"
-                                Maximum="900"
-                                Increment="10"/>
+            <Label x:Name="LabelServiceTag" Content="Service Tag" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
 
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Width="120" Minimum="100" Maximum="900" Increment="10" Name="myUpDownControl" TextAlignment="Right" HorizontalAlignment="Right" Height="17.96"/>
+            
             <GroupBox Header="Service Priority" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Padding="3" VerticalAlignment="Center" Margin="0,6" >
                 <Grid  HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
@@ -75,9 +73,9 @@
                 </Grid>
             </GroupBox>
             <Label x:Name="LabelCost" Content="Service Cost" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120"/>
+            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" TextAlignment="Right"/>
             <Label x:Name="LabelProblem" Grid.Column="0" Grid.Row="5" Content="Service Problem"  VerticalAlignment="Top" Margin="0,3,0,0" />
-            <TextBox x:Name="TextBoxProblem" Grid.Column="1" Grid.Row="5" AcceptsReturn="True" Width="120" Height="83" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,0,0"/>
+            <TextBox x:Name="TextBoxProblem" Grid.Column="1" Grid.Row="5" AcceptsReturn="True" Width="120" Height="83" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,0,0" TextAlignment="Right"/>
         </Grid>
 
         <ListView Grid.Column="2" Grid.Row="1" x:Name="ListBoxFinishedItems" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="16">

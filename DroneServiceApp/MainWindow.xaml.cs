@@ -18,9 +18,9 @@ namespace DroneServiceApp
             InitializeComponent();
         }
 
-        public List<Drone> FinishedList = new();
-        public Queue<Drone> ExpressQueue = new();
-        public Queue<Drone> RegularQueue = new();
+        private List<Drone> FinishedList = new();
+        private Queue<Drone> ExpressQueue = new();
+        private Queue<Drone> RegularQueue = new();
 
         #region Buttons and Events
         // Q6.10 Keypress method for service cost
