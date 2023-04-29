@@ -5,6 +5,8 @@
 
 // Q6.1 Separate class file
 
+using System.Collections.ObjectModel;
+
 namespace DroneServiceApp
 {
     public class Drone
@@ -13,30 +15,27 @@ namespace DroneServiceApp
 
         // Declare variables
         // ReSharper disable InconsistentNaming
-        private string ClientName;
-        private string DroneModel;
-        private string ServiceProblem;
-        private string ServicePriority;
-        private double ServiceCost;
-        private int ServiceTag;
+        public string ClientName { get; private set; }
+        public string DroneModel { get; private set; }
+        public string ServiceProblem { get; private set; }
+        public string ServicePriority { get; private set; }
+        public double ServiceCost { get; private set; }
+        public int ServiceTag { get; private set; }
 
-        public Drone(string clientName, string droneModel, string serviceProblem, string servicePriority)
+        public Drone()
+        {
+      
+        }
+
+        // Constructor with all properties
+        public Drone(string clientName, string droneModel, string serviceProblem, double serviceCost, int serviceTag, string servicePriority)
         {
             ClientName = clientName;
             DroneModel = droneModel;
             ServiceProblem = serviceProblem;
+            ServiceCost = serviceCost;
+            ServiceTag = serviceTag;
             ServicePriority = servicePriority;
-        }
-
-        // Constructor with all properties
-        public Drone(string newClientName, string newDroneModel, string newServiceProblem, double newServiceCost, int newServiceTag, string newServicePriority)
-        {
-            ClientName = newClientName;
-            DroneModel = newDroneModel;
-            ServiceProblem = newServiceProblem;
-            ServiceCost = newServiceCost;
-            ServiceTag = newServiceTag;
-            ServicePriority = newServicePriority;
         }
 
         #region Getters and Setters
@@ -94,9 +93,9 @@ namespace DroneServiceApp
             return ServiceTag;
         }
 
-        public void SetServicePriority(int newServicePriority)
+        public void SetServicePriority(string newServicePriority)
         {
-            ServiceTag = newServicePriority;
+            ServicePriority = newServicePriority;
         }
 
         public string GetServicePriority()
@@ -106,4 +105,5 @@ namespace DroneServiceApp
         #endregion
 
     }
+
 }

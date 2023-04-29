@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Drone Service Application" Height="450" Width="800">
+        Title="Drone Service Application" Height="450" Width="800" 
+        DataContext="{Binding}">
     <Grid HorizontalAlignment="Center" Width="780" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -22,18 +23,36 @@
         <Label Grid.Column="1" Grid.Row="0" x:Name="LabelServiceList" Content="Drones for service or repair" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Grid.Column="2" Grid.Row="0" x:Name="LabelFinishedList" Content="Drones completed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <ListView Grid.Column="1" Grid.Row="1" x:Name="ListViewServiceItems" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="16" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
-                    <GridViewColumn Header="Drone Model" DisplayMemberBinding="{Binding DroneModel}"/>
-                    <GridViewColumn Header="Service Priority" DisplayMemberBinding="{Binding ServicePriority}"/>
-                    <GridViewColumn Header="Service Tag" DisplayMemberBinding="{Binding ServiceTag}"/>
-                    <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding ServiceCost}"/>
-                    <GridViewColumn Header="Service Problem" DisplayMemberBinding="{Binding ServiceProblem}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+
+
+        <Grid Grid.Column="1" Grid.Row="1" x:Name="ListViewGrid"  >
+            <ListView x:Name="ListViewServiceExpress" ItemsSource="{Binding Path=ExpressQueue}" Margin="16,16,16,180" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path=ClientName}"/>
+                        <GridViewColumn Header="Drone Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
+                        <GridViewColumn Header="Service Priority" DisplayMemberBinding="{Binding Path= ServicePriority}"/>
+                        <GridViewColumn Header="Service Tag" DisplayMemberBinding="{Binding Path= ServiceTag}"/>
+                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding Path= ServiceCost}"/>
+                        <GridViewColumn Header="Service Problem" DisplayMemberBinding="{Binding Path= ServiceProblem}"/>
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView  x:Name="ListViewServiceRegular" ItemsSource="{Binding Path=RegularQueue}" Margin="16,180,16,16" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path= ClientName}"/>
+                        <GridViewColumn Header="Drone Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
+                        <GridViewColumn Header="Service Priority" DisplayMemberBinding="{Binding Path=ServicePriority}"/>
+                        <GridViewColumn Header="Service Tag" DisplayMemberBinding="{Binding Path=ServiceTag}"/>
+                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding Path=ServiceCost}"/>
+                        <GridViewColumn Header="Service Problem" DisplayMemberBinding="{Binding Path=ServiceProblem}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+           
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="312" >
             <Grid.ColumnDefinitions>
@@ -50,16 +69,16 @@
             </Grid.RowDefinitions>
 
             <Label x:Name="LabelName" Grid.Column="0" Grid.Row="0" Content="Client Name" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxName" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" TextAlignment="Right"/>
+            <TextBox x:Name="TextBoxClientName" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" />
 
             <Label x:Name="LabelModel" Grid.Column="0" Grid.Row="1" Content="Drone Model"  VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxModel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" TextAlignment="Right"/>
+            <TextBox x:Name="TextBoxModel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120"/>
 
             <Label x:Name="LabelServiceTag" Content="Service Tag" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
 
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Width="120" Minimum="100" Maximum="900" Increment="10" Name="myUpDownControl" TextAlignment="Right" HorizontalAlignment="Right" Height="17.96"/>
-            
-            <GroupBox Header="Service Priority" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Padding="3" VerticalAlignment="Center" Margin="0,6" >
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Width="120" Minimum="100" Maximum="900" Increment="10" x:Name="TextBoxServiceTag" HorizontalAlignment="Right" Height="17.96"/>
+
+            <GroupBox x:Name="GroupBoxRadioButtons" Header="Service Priority" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Padding="3" VerticalAlignment="Center" Margin="0,6" >
                 <Grid  HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -68,14 +87,14 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <RadioButton x:Name="RadioButtonRegular" GroupName="servicePriority" Grid.Column="0" Grid.Row="0"  Content="Regular" Margin="6"/>
-                    <RadioButton x:Name="RadioButtonExpress" GroupName="servicePriority" Grid.Column="1" Grid.Row="0" Content="Express" Margin="6"/>
+                    <RadioButton x:Name="RadioButtonRegular" GroupName="groupNameServicePriority" Grid.Column="0" Grid.Row="0"  Content="Regular" Margin="6"/>
+                    <RadioButton x:Name="RadioButtonExpress" GroupName="groupNameServicePriority" Grid.Column="1" Grid.Row="0" Content="Express" Margin="6"/>
                 </Grid>
             </GroupBox>
             <Label x:Name="LabelCost" Content="Service Cost" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" TextAlignment="Right"/>
+            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" InputScope="Number" />
             <Label x:Name="LabelProblem" Grid.Column="0" Grid.Row="5" Content="Service Problem"  VerticalAlignment="Top" Margin="0,3,0,0" />
-            <TextBox x:Name="TextBoxProblem" Grid.Column="1" Grid.Row="5" AcceptsReturn="True" Width="120" Height="83" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,0,0" TextAlignment="Right"/>
+            <TextBox x:Name="TextBoxProblem" Grid.Column="1" Grid.Row="5" AcceptsReturn="True" Width="120" Height="83" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,0,0" />
         </Grid>
 
         <ListView Grid.Column="2" Grid.Row="1" x:Name="ListBoxFinishedItems" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="16">
@@ -88,5 +107,6 @@
         </ListView>
         <Button Grid.Column="0" Grid.Row="2" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16" Click="ButtonAddNew_Click"/>
         <Button Grid.Column="1" Grid.Row="2" x:Name="ButtonDequeue" Content="Service Complete" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16" Click="ButtonDequeue_Click"/>
+       
     </Grid>
 </Window>
