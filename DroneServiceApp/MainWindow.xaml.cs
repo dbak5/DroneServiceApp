@@ -25,13 +25,21 @@ namespace DroneServiceApp
         #region Buttons and Events
         // Q6.10 Keypress method for service cost
 
-        // Q6.12 Mouse click method to populate textbox from regular service ListView
 
+        // Q6.12 Mouse click method to populate textbox from regular service ListView
         // Q6.13 Mouse click method to populate textbox from express service ListView
+        private void ButtonAddNew_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         // Q6.14 Button method to dequeue regular data structure and add item to list
-
         // Q6.15 Button method to dequeue express data structure and add item to list
+        private void ButtonDequeue_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         // Q6.16 Double click method to remove item from listbox and list data structure
 
@@ -57,5 +65,7 @@ namespace DroneServiceApp
         // Q6.17 Custom method to clear textboxes
 
         #endregion
+
+
     }
 }

@@ -88,7 +88,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Grid.Column="0" Grid.Row="2" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16"/>
-        <Button Grid.Column="1" Grid.Row="2" x:Name="ButtonDequeue" Content="Service Complete" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16"/>
+        <Button Grid.Column="0" Grid.Row="2" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16" Click="ButtonAddNew_Click"/>
+        <Button Grid.Column="1" Grid.Row="2" x:Name="ButtonDequeue" Content="Service Complete" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16" Click="ButtonDequeue_Click"/>
     </Grid>
 </Window>

@@ -4,11 +4,10 @@
 // Description: Drone Service Application to log drones for service and repair
 
 // Q6.1 Separate class file
-using System.Xml.Linq;
 
 namespace DroneServiceApp
 {
-    internal class Drone
+    public class Drone
     {
         // Q6.2 List of Class
 
@@ -17,25 +16,27 @@ namespace DroneServiceApp
         private string ClientName;
         private string DroneModel;
         private string ServiceProblem;
+        private string ServicePriority;
         private double ServiceCost;
         private int ServiceTag;
 
-        // Default constructor
-        public Drone(string clientName, string droneModel, string serviceProblem)
+        public Drone(string clientName, string droneModel, string serviceProblem, string servicePriority)
         {
             ClientName = clientName;
             DroneModel = droneModel;
             ServiceProblem = serviceProblem;
+            ServicePriority = servicePriority;
         }
 
         // Constructor with all properties
-        public Drone(string newClientName, string newDroneModel, string newServiceProblem, double newServiceCost, int newServiceTag, string clientName, string droneModel, string serviceProblem)
+        public Drone(string newClientName, string newDroneModel, string newServiceProblem, double newServiceCost, int newServiceTag, string newServicePriority)
         {
             ClientName = newClientName;
             DroneModel = newDroneModel;
             ServiceProblem = newServiceProblem;
             ServiceCost = newServiceCost;
             ServiceTag = newServiceTag;
+            ServicePriority = newServicePriority;
         }
 
         #region Getters and Setters
@@ -90,6 +91,15 @@ namespace DroneServiceApp
             return ServiceTag;
         }
 
+        public void SetServicePriority(int newServicePriority)
+        {
+            ServiceTag = newServicePriority;
+        }
+
+        public string GetServicePriority()
+        {
+            return ServicePriority;
+        }
         #endregion
 
     }
