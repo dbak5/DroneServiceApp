@@ -5,6 +5,7 @@
 
 // Q6.1 Separate class file
 
+using System;
 using System.Collections.ObjectModel;
 
 namespace DroneServiceApp
@@ -46,65 +47,43 @@ namespace DroneServiceApp
             // capitalisaing can be done here
         }
 
-        public string GetClientName()
-        {
-            return ClientName;
-        }
-
         public void SetDroneModel(string newDroneModel)
         {
             DroneModel = newDroneModel;
         }
 
-        public string GetDroneModel()
+        public void SetServiceProblem(string serviceProblem)
         {
-            return DroneModel;
+            ServiceProblem = serviceProblem;
         }
 
-        public void SetServiceProblem(string newServiceProblem)
+        public void SetServiceCost(double serviceCost)
         {
-            ServiceProblem = newServiceProblem;
+            ServiceCost = serviceCost;
         }
 
-        public string GetServiceProblem()
+        public void SetServiceTag(int serviceTag)
         {
-            return ServiceProblem;
+            ServiceTag = ServiceTag switch
+            {
+                < 100 => throw new Exception("Service tag cannot be less than 100"),
+                > 900 => throw new Exception("Service tag cannot be more than 900"),
+                _ => serviceTag
+            };
         }
 
-        public void SetServiceCost(double newServiceCost)
+        public void SetServicePriority(string servicePriority)
         {
-            ServiceCost = newServiceCost;
-            // validation for negatives can be done here
-            // 15% extra cost here for express
-            if (ServiceCost < 0) return;
-            // Q6.6 Increase express service by 15% 
+            const string regular = "Regular";
+            const string express = "Express";
 
+            if (servicePriority != regular && servicePriority != express)
+            {
+                throw new ArgumentOutOfRangeException("Can only be set to regular or express");
+            }
+            ServicePriority = servicePriority;
         }
 
-        public double GetServiceCost()
-        {
-            return ServiceCost;
-        }
-
-        public void SetServiceTag(int newServiceTag)
-        {
-            ServiceTag = newServiceTag;
-        }
-
-        public int GetServiceTag()
-        {
-            return ServiceTag;
-        }
-
-        public void SetServicePriority(string newServicePriority)
-        {
-            ServicePriority = newServicePriority;
-        }
-
-        public string GetServicePriority()
-        {
-            return ServicePriority;
-        }
         #endregion
 
     }

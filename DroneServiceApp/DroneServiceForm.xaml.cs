@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -30,14 +31,14 @@ namespace DroneServiceApp
 
         // Q6.3 Queue of drone class (regular service)
         public Queue<Drone> RegularQueue = new();
-        private object statusUpdate;
+
+        private const int RegularCost = 200;
 
         #region Buttons and Events
 
         // Q6.11 Custom method to increment service tag control - ASK LECTURER
         // Q6.8 Custom method to display regular service queue in ListView - ASK LECTURER
         // Q6.9 Custom method to display express service queue in ListView - ASK LECTURER
-        // STATUS BAR MESSAGES
         // TOOLTIPS
 
         /// <summary>
@@ -54,10 +55,20 @@ namespace DroneServiceApp
             var serviceTag = int.Parse(TextBoxServiceTag.Text);
             var servicePriority = GetServicePriority().ToString();
 
+            // CHECK REFACTOR THIS
+            if (!CheckTextBoxEmpty(clientName)) return;
+            if (!CheckTextBoxEmpty(droneModel)) return;
+            if (!CheckTextBoxEmpty(serviceProblem)) return;
+            if (!CheckTextBoxEmpty(serviceCost.ToString("C",CultureInfo.CurrentCulture))) return;
+            if (!CheckTextBoxEmpty(serviceTag.ToString())) return;
+            if (!CheckTextBoxEmpty(servicePriority)) return;
+            if (serviceCost < 0) return;
+
             AddNewItem(clientName, droneModel, serviceProblem, serviceCost, serviceTag, servicePriority);
             ClearTextBoxes();
         }
 
+        //CHECK THIS ISNT WORKING NOW
         /// <summary>
         ///  Q6.10 Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point
         /// </summary>
@@ -65,7 +76,7 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextNumeric(e.Text);
+            e.Handled = CheckNumeric(e.Text);
         }
 
         /// <summary>
@@ -95,7 +106,8 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void ButtonRegularDequeue_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckIfQueueEmpty(RegularQueue)) return;
+            if (CheckQueueEmpty(RegularQueue)) return;
+            ClearTextBoxes();
             RemoveAndDequeue(RegularQueue, ListViewServiceRegular);
         }
 
@@ -106,7 +118,8 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void ButtonExpressDequeue_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckIfQueueEmpty(ExpressQueue)) return;
+            if (CheckQueueEmpty(ExpressQueue)) return;
+            ClearTextBoxes();
             RemoveAndDequeue(ExpressQueue, ListViewServiceExpress);
         }
         
@@ -115,9 +128,50 @@ namespace DroneServiceApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListViewFinishedItems_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ListViewFinishedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             RemoveFinishedItems();
+        }
+
+        /// <summary>
+        /// Button to remove items from completed items list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonPaid_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveFinishedItems();
+        }
+
+        /// <summary>
+        /// Q6.6 Increase express service by 15% 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RadioButtonExpress_Checked(object sender, RoutedEventArgs e)
+        {
+                const double expressCost = RegularCost * 1.15;
+                TextBoxCost.Text = expressCost.ToString("C", CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Set default cost for a regular service when radio button checked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RadioButtonRegular_Checked(object sender, RoutedEventArgs e)
+        {
+            TextBoxCost.Text = RegularCost.ToString("C", CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Set default cost for a regular service on window load
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxCost.Text = RegularCost.ToString("C", CultureInfo.CurrentCulture);
         }
 
         #endregion
@@ -183,6 +237,7 @@ namespace DroneServiceApp
             var selectedItem = (Drone)ListViewFinishedItems.SelectedItem;
             FinishedList.Remove(selectedItem);
             ListViewFinishedItems.Items.Remove(selectedItem);
+            UpdateStatusStrip("Drone removed from finished items");
         }
 
         /// <summary>
@@ -244,14 +299,37 @@ namespace DroneServiceApp
             TextBoxClientName.Text = selectedItem.ClientName;
             TextBoxModel.Text = selectedItem.DroneModel;
             TextBoxProblem.Text = selectedItem.ServiceProblem;
-            TextBoxCost.Text = selectedItem.ServiceCost.ToString();
+            TextBoxCost.Text = selectedItem.ServiceCost.ToString("C", CultureInfo.CurrentCulture);
             TextBoxServiceTag.Text = selectedItem.ServiceTag.ToString();
+            SetRadioButton(selectedItem.ServicePriority);
         }
 
+        /// <summary>
+        /// Update status strip
+        /// </summary>
+        /// <param name="message"></param>
         private void UpdateStatusStrip(string message)
         {
-            sbMessage.Text = message;
+            StatusBarMessage.Text = message;
         }
+
+        /// <summary>
+        /// Check radio button 
+        /// </summary>
+        /// <param name="servicePriority"></param>
+        private void SetRadioButton(string servicePriority)
+        {
+            switch (servicePriority)
+            {
+                case "Express":
+                    RadioButtonExpress.IsChecked = true;
+                    break;
+                case "Regular":
+                    RadioButtonRegular.IsChecked = true;
+                    break;
+            }
+        }
+
         #endregion
 
         #region Booleans for errors
@@ -261,7 +339,7 @@ namespace DroneServiceApp
         /// </summary>
         /// <param name="queue"></param>
         /// <returns></returns>
-        private static bool CheckIfQueueEmpty(ICollection? queue)
+        private static bool CheckQueueEmpty(ICollection? queue)
         {
             return queue != null && queue.Count == 0;
 
@@ -272,13 +350,24 @@ namespace DroneServiceApp
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        private static bool IsTextNumeric(string text)
+        private static bool CheckNumeric(string text)
         {
-            return System.Text.RegularExpressions.Regex.IsMatch(text, "[^0-9]+");
+            return System.Text.RegularExpressions.Regex.IsMatch(text, "[^0-9]+[.]");
+        }
+
+        /// <summary>
+        /// Check if text box is empty
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        private static bool CheckTextBoxEmpty(string content)
+        {
+            return !string.IsNullOrEmpty(content);
         }
 
         #endregion
 
+     
     }
     
 }
