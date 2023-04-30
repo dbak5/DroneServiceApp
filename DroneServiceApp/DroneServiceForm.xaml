@@ -5,86 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Drone Service Application" Height="450" Width="800" 
-        DataContext="{Binding}">
-    <Grid HorizontalAlignment="Center" Width="780" >
+        Title="Drone Service Application"
+        DataContext="{Binding}" >
+    <Grid x:Name="FormGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="320" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="44.932" />
+            <ColumnDefinition Width="305.068"/>
+            <ColumnDefinition Width="22*" />
+            <ColumnDefinition Width="167*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" x:Name="LabelInputData" Content="Enter Drone" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Grid.Column="1" Grid.Row="0" x:Name="LabelServiceList" Content="Drones for service or repair" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Grid.Column="2" Grid.Row="0" x:Name="LabelFinishedList" Content="Drones completed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" x:Name="ListViewGrid">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-
-            <ListView Grid.Row="0" x:Name="ListViewServiceExpress" Margin="12" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListViewServiceExpress_SelectionChanged" >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path=ClientName}"/>
-                        <GridViewColumn Header="Drone Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
-                        <GridViewColumn Header="Service Priority" DisplayMemberBinding="{Binding Path= ServicePriority}"/>
-                        <GridViewColumn Header="Service Tag" DisplayMemberBinding="{Binding Path= ServiceTag}"/>
-                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding Path= ServiceCost}"/>
-                        <GridViewColumn Header="Service Problem" DisplayMemberBinding="{Binding Path= ServiceProblem}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <Button Grid.Row="1" x:Name="ButtonExpressDequeue" Content="Service Complete" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="12" Click="ButtonExpressDequeue_Click"/>
-
-            <ListView  Grid.Row="2"  x:Name="ListViewServiceRegular" ItemsSource="{Binding Path=RegularQueue}"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="12">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path= ClientName}"/>
-                        <GridViewColumn Header="Drone Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
-                        <GridViewColumn Header="Service Priority" DisplayMemberBinding="{Binding Path=ServicePriority}"/>
-                        <GridViewColumn Header="Service Tag" DisplayMemberBinding="{Binding Path=ServiceTag}"/>
-                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding Path=ServiceCost}"/>
-                        <GridViewColumn Header="Service Problem" DisplayMemberBinding="{Binding Path=ServiceProblem}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <Button Grid.Row="3"  x:Name="ButtonRegularDequeue" Content="Service Complete" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Click="ButtonRegularDequeue_Click"/>
-        </Grid>
-
-        <Grid  Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="312" Margin="12" >
+        <Grid Grid.Column="0" Grid.Row="0" x:Name="InputsGrid" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition Height="30" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="30" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label x:Name="LabelName" Grid.Column="0" Grid.Row="0" Content="Client Name" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxClientName" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" />
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="LabelInputData" Content="Enter Drone" HorizontalAlignment="Center" Margin="0,6"  />
 
-            <Label x:Name="LabelModel" Grid.Column="0" Grid.Row="1" Content="Drone Model"  VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxModel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120"/>
+            <Label Grid.Column="0" Grid.Row="1"  x:Name="LabelName" Margin="6"  Content="Client Name"  />
+            <TextBox Grid.Column="1" Grid.Row="1"  x:Name="TextBoxClientName" Margin="6"  />
 
-            <Label x:Name="LabelServiceTag" Content="Service Tag" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Width="120" Minimum="100" Maximum="900" Increment="10" x:Name="TextBoxServiceTag" HorizontalAlignment="Right" Height="17.96"/>
+            <Label Grid.Column="0" Grid.Row="2"  x:Name="LabelModel" Margin="6"  Content="Drone Model" />
+            <TextBox Grid.Column="1" Grid.Row="2"  x:Name="TextBoxModel" Margin="6" />
 
-            <GroupBox x:Name="GroupBoxRadioButtons" Header="Service Priority" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Padding="3" VerticalAlignment="Center" Margin="0,6" >
+            <Label  Grid.Column="0" Grid.Row="3"  x:Name="LabelServiceTag" Content="Service Tag" Margin="6" />
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Margin="6" Minimum="100" Maximum="900" Increment="10" x:Name="TextBoxServiceTag" />
+
+            <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  x:Name="GroupBoxRadioButtons" Header="Service Priority" Padding="6"  Margin="6" >
                 <Grid  HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -93,29 +56,86 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <RadioButton x:Name="RadioButtonRegular" GroupName="groupNameServicePriority" Grid.Column="0" Grid.Row="0"  Content="Regular" Margin="6"/>
-                    <RadioButton x:Name="RadioButtonExpress" GroupName="groupNameServicePriority" Grid.Column="1" Grid.Row="0" Content="Express" Margin="6"/>
+                    <RadioButton x:Name="RadioButtonRegular" GroupName="groupNameServicePriority" Grid.Column="0" Grid.Row="0"  Content="Regular" Margin="12"/>
+                    <RadioButton x:Name="RadioButtonExpress" GroupName="groupNameServicePriority" Grid.Column="1" Grid.Row="0" Content="Express" Margin="12"/>
                 </Grid>
             </GroupBox>
 
-            <Label x:Name="LabelCost" Content="Service Cost" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" InputScope="Number" />
+            <Label Grid.Column="0" Grid.Row="5" x:Name="LabelCost" Content="Service Cost" Margin="6"   VerticalAlignment="Center" />
+            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="5" Margin="6"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" />
 
-            <Label x:Name="LabelProblem" Grid.Column="0" Grid.Row="5" Content="Service Problem"  VerticalAlignment="Top" Margin="0,3,0,0" />
-            <TextBox x:Name="TextBoxProblem" Grid.Column="1" Grid.Row="5" AcceptsReturn="True" Width="120" Height="83" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,0,0" />
+            <Label Grid.Column="0" Grid.Row="6"  x:Name="LabelProblem" Content="Service Problem"  VerticalAlignment="Top" Margin="6"  />
+            <TextBox Grid.Column="1" Grid.Row="6"  x:Name="TextBoxProblem" Margin="6"  AcceptsReturn="True"/>
+
+            <Button Grid.Column="1" Grid.Row="7" Margin="12" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" Click="ButtonAddNew_Click"/>
+
         </Grid>
 
-        <ListView Grid.Column="2" Grid.Row="1" x:Name="ListViewFinishedItems"  ItemsSource="{Binding Path=CompleteDronesList}" Margin="16" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
-                    <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding ServiceCost}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <Grid Grid.Column="1" Grid.Row="0" x:Name="ListViewGrid" Margin="10,10,10,10" Grid.ColumnSpan="2"  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="2" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16" Click="ButtonAddNew_Click"/>
-        <Button Grid.Column="2" Grid.Row="2"  x:Name="ButtonPaid" Content="Button" HorizontalAlignment="Left" Margin="145,0,0,0" VerticalAlignment="Center"/>
+            <Label Grid.Row="0" x:Name="LabelListViewExpress" Margin="3" Content="Express Queue" HorizontalAlignment="Center" />
+            <ListView Grid.Row="1" x:Name="ListViewServiceExpress" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceExpress_SelectionChanged" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path=ClientName}"/>
+                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
+                        <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding Path= ServiceTag}"/>
+                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path= ServiceCost}"/>
+                        <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding Path= ServiceProblem}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Grid.Row="2" x:Name="ButtonExpressDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right" Click="ButtonExpressDequeue_Click"/>
+            <Label Grid.Row="3" x:Name="LabelListViewRegular" Margin="3" Content="Regular Queue" HorizontalAlignment="Center" />
+            <ListView  Grid.Row="4"  x:Name="ListViewServiceRegular"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceRegular_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path= ClientName}"/>
+                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
+                        <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding Path=ServiceTag}"/>
+                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path=ServiceCost}"/>
+                        <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding Path=ServiceProblem}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Grid.Row="5"  x:Name="ButtonRegularDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right"  Click="ButtonRegularDequeue_Click"/>
+        </Grid>
+
+        <Grid Grid.Column="3" Grid.Row="0"  x:Name="FinishedListViewGrid" Margin="10,10,10,10" Grid.ColumnSpan="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" x:Name="LabelFinishedList" Margin="3" Content="Drones completed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <ListView Grid.Column="0" Grid.Row="1" x:Name="ListViewFinishedItems"  Margin="6" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ListViewFinishedItems_MouseDoubleClick">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
+                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding ServiceCost}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Button Grid.Column="0" Grid.Row="2" Margin="12" x:Name="ButtonPaid" Content="Paid" HorizontalAlignment="Right" />
+
+        </Grid>
+
+        <StatusBar Grid.Column="0" Grid.ColumnSpan="5" x:Name="StatusBar" Margin="0,487,0,0" Grid.RowSpan="2" >
+            <StatusBarItem>
+                <TextBlock Name="sbMessage" Text="{Binding statusUpdate.Message}"/>
+            </StatusBarItem>
+        </StatusBar>
 
     </Grid>
 </Window>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 // Author: DaHye Baker
 // Student ID: 30063368
@@ -28,36 +30,15 @@ namespace DroneServiceApp
 
         // Q6.3 Queue of drone class (regular service)
         public Queue<Drone> RegularQueue = new();
+        private object statusUpdate;
 
         #region Buttons and Events
 
-        // Q6.10 Keypress method for service cost
-        // Q6.16 Double click method to remove item from listbox and list data structure
-        // Q6.6 Increase express service by 15% 
-        // Q6.11 Custom method to increment service tag control
-
-        // Q6.8 Custom method to display regular service queue in ListView
-        // Q6.9 Custom method to display express service queue in ListView
-
-        /// <summary>
-        /// Q6.13 Mouse click method to populate textbox from express service ListView
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListViewServiceExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectItemListView(ListViewServiceExpress);
-        }
-
-        /// <summary>
-        /// Q6.12 Mouse click method to populate textbox from regular service ListView
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListViewServiceRegular_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectItemListView(ListViewServiceRegular);
-        }
+        // Q6.11 Custom method to increment service tag control - ASK LECTURER
+        // Q6.8 Custom method to display regular service queue in ListView - ASK LECTURER
+        // Q6.9 Custom method to display express service queue in ListView - ASK LECTURER
+        // STATUS BAR MESSAGES
+        // TOOLTIPS
 
         /// <summary>
         /// 6.5 Create a button method called “AddNewItem”
@@ -75,6 +56,36 @@ namespace DroneServiceApp
 
             AddNewItem(clientName, droneModel, serviceProblem, serviceCost, serviceTag, servicePriority);
             ClearTextBoxes();
+        }
+
+        /// <summary>
+        ///  Q6.10 Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = IsTextNumeric(e.Text);
+        }
+
+        /// <summary>
+        /// Q6.12 Mouse click method to populate textbox from regular service ListView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewServiceRegular_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectItemListView(ListViewServiceRegular);
+        }
+
+        /// <summary>
+        /// Q6.13 Mouse click method to populate textbox from express service ListView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewServiceExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectItemListView(ListViewServiceExpress);
         }
 
         /// <summary>
@@ -97,6 +108,16 @@ namespace DroneServiceApp
         {
             if (CheckIfQueueEmpty(ExpressQueue)) return;
             RemoveAndDequeue(ExpressQueue, ListViewServiceExpress);
+        }
+        
+        /// <summary>
+        /// Q6.16 Create a double mouse click method that will delete a service item from the finished listbox and remove the same item from the List
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewFinishedItems_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            RemoveFinishedItems();
         }
 
         #endregion
@@ -125,10 +146,12 @@ namespace DroneServiceApp
                 case "Regular":
                     RegularQueue.Enqueue(newDrone);
                     ListViewServiceRegular.Items.Add(newDrone);
+                    UpdateStatusStrip("Drone added to regular service queue");
                     break;
                 case "Express":
                     ExpressQueue.Enqueue(newDrone);
                     ListViewServiceExpress.Items.Add(newDrone);
+                    UpdateStatusStrip("Drone added to express service queue");
                     break;
             }
         }
@@ -150,6 +173,16 @@ namespace DroneServiceApp
             }
 
             return "";
+        }
+
+        /// <summary>
+        /// Q6.16 Create a double mouse click method that will delete a service item from the finished listbox and remove the same item from the List
+        /// </summary>
+        private void RemoveFinishedItems()
+        {
+            var selectedItem = (Drone)ListViewFinishedItems.SelectedItem;
+            FinishedList.Remove(selectedItem);
+            ListViewFinishedItems.Items.Remove(selectedItem);
         }
 
         /// <summary>
@@ -205,7 +238,7 @@ namespace DroneServiceApp
         /// Select item from list view and display in text boxes
         /// </summary>
         /// <param name="listView"></param>
-        private void SelectItemListView(ListView listView)
+        private void SelectItemListView(Selector listView)
         {
             var selectedItem = (Drone)listView.SelectedItem;
             TextBoxClientName.Text = selectedItem.ClientName;
@@ -215,6 +248,10 @@ namespace DroneServiceApp
             TextBoxServiceTag.Text = selectedItem.ServiceTag.ToString();
         }
 
+        private void UpdateStatusStrip(string message)
+        {
+            sbMessage.Text = message;
+        }
         #endregion
 
         #region Booleans for errors
@@ -230,43 +267,18 @@ namespace DroneServiceApp
 
         }
 
+        /// <summary>
+        /// Check if text is numeric using regular expressions
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private static bool IsTextNumeric(string text)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(text, "[^0-9]+");
+        }
+
         #endregion
 
     }
-
-    //public class ObservableQueue<T> : INotifyCollectionChanged, IEnumerable<T>
-    //{
-    //    public event NotifyCollectionChangedEventHandler? CollectionChanged;
-    //    private readonly Queue<T> _queue = new Queue<T>();
-
-    //    public void Enqueue(T item)
-    //    {
-    //        _queue.Enqueue(item);
-    //        if (CollectionChanged != null)
-    //            CollectionChanged(this,
-    //                new NotifyCollectionChangedEventArgs(
-    //                    NotifyCollectionChangedAction.Add, item));
-    //    }
-
-    //    public T Dequeue()
-    //    {
-    //        var item = _queue.Dequeue();
-    //        if (CollectionChanged != null)
-    //            CollectionChanged(this,
-    //                new NotifyCollectionChangedEventArgs(
-    //                    NotifyCollectionChangedAction.Remove, item));
-    //        return item;
-    //    }
-
-    //    public IEnumerator<T> GetEnumerator()
-    //    {
-    //        return _queue.GetEnumerator();
-    //    }
-
-    //    IEnumerator IEnumerable.GetEnumerator()
-    //    {
-    //        return GetEnumerator();
-    //    }
-    //}
-
+    
 }

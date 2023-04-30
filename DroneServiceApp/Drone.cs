@@ -76,6 +76,9 @@ namespace DroneServiceApp
             ServiceCost = newServiceCost;
             // validation for negatives can be done here
             // 15% extra cost here for express
+            if (ServiceCost < 0) return;
+            // Q6.6 Increase express service by 15% 
+
         }
 
         public double GetServiceCost()
