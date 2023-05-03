@@ -64,23 +64,19 @@ namespace DroneServiceApp
 
         public void SetServiceTag(int serviceTag)
         {
-            ServiceTag = ServiceTag switch
+            switch (serviceTag)
             {
-                < 100 => throw new Exception("Service tag cannot be less than 100"),
-                > 900 => throw new Exception("Service tag cannot be more than 900"),
-                _ => serviceTag
-            };
+                case < 100: throw new Exception("Service tag cannot be less than 100");
+                case > 900: throw new Exception("Service tag cannot be more than 900");
+                default:
+                    ServiceTag = serviceTag;
+                    break;
+            }
         }
 
         public void SetServicePriority(string servicePriority)
         {
-            const string regular = "Regular";
-            const string express = "Express";
-
-            if (servicePriority != regular && servicePriority != express)
-            {
-                throw new ArgumentOutOfRangeException("Can only be set to regular or express");
-            }
+          
             ServicePriority = servicePriority;
         }
 

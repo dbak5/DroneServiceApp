@@ -37,15 +37,15 @@
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="LabelInputData" Content="Enter Drone" HorizontalAlignment="Center" Margin="0,6"  />
 
             <Label Grid.Column="0" Grid.Row="1"  x:Name="LabelName" Margin="6"  Content="Client Name"  />
-            <TextBox Grid.Column="1" Grid.Row="1"  x:Name="TextBoxClientName" Margin="6"  />
+            <TextBox Grid.Column="1" Grid.Row="1"  x:Name="TextBoxClientName" Margin="6" VerticalContentAlignment="Center" ToolTip="Enter client name" />
 
             <Label Grid.Column="0" Grid.Row="2"  x:Name="LabelModel" Margin="6"  Content="Drone Model" />
-            <TextBox Grid.Column="1" Grid.Row="2"  x:Name="TextBoxModel" Margin="6" />
+            <TextBox Grid.Column="1" Grid.Row="2"  x:Name="TextBoxModel" Margin="6" VerticalContentAlignment="Center" ToolTip="Enter drone model" />
 
             <Label  Grid.Column="0" Grid.Row="3"  x:Name="LabelServiceTag" Content="Service Tag" Margin="6" />
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Margin="6" Minimum="100" Maximum="900" Increment="10" x:Name="TextBoxServiceTag" />
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Margin="6" Minimum="100" Maximum="900" Increment="10" TextAlignment="Left" ToolTip="Select service tag number" VerticalContentAlignment="Center"  x:Name="TextBoxServiceTag" />
 
-            <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  x:Name="GroupBoxRadioButtons" Header="Service Priority" Padding="6"  Margin="6" >
+            <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  x:Name="GroupBoxRadioButtons" Header="Service Priority" Padding="6"  Margin="6" ToolTip="Select a service priority">
                 <Grid  HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -60,12 +60,12 @@
             </GroupBox>
 
             <Label Grid.Column="0" Grid.Row="5" x:Name="LabelCost" Content="Service Cost" Margin="6"  VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="5" Margin="6"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" />
+            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="5" Margin="6" VerticalContentAlignment="Center"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" ToolTip="Cost calculated once service priority selected" />
 
             <Label Grid.Column="0" Grid.Row="6"  x:Name="LabelProblem" Content="Service Problem"  VerticalAlignment="Top" Margin="6"  />
-            <TextBox Grid.Column="1" Grid.Row="6"  x:Name="TextBoxProblem" Margin="6"  AcceptsReturn="True"/>
+            <TextBox Grid.Column="1" Grid.Row="6"  x:Name="TextBoxProblem" Margin="6" VerticalContentAlignment="Top"  AcceptsReturn="True" TextWrapping="Wrap" ToolTip="Describe service issue"/>
 
-            <Button Grid.Column="1" Grid.Row="7" Margin="12" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" Click="ButtonAddNew_Click"/>
+            <Button Grid.Column="1" Grid.Row="7" Margin="12" x:Name="ButtonAddNew" Content="Add New" HorizontalAlignment="Right" Click="ButtonAddNew_Click" ToolTip="Add drone to service queue"/>
 
         </Grid>
 
@@ -80,7 +80,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" x:Name="LabelListViewExpress" Margin="3" Content="Express Queue" HorizontalAlignment="Center" />
-            <ListView Grid.Row="1" x:Name="ListViewServiceExpress" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceExpress_SelectionChanged" >
+            <ListView Grid.Row="1" x:Name="ListViewServiceExpress" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceExpress_SelectionChanged" ToolTip="Displays drone express service queue">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path=ClientName}"/>
@@ -91,9 +91,9 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Button Grid.Row="2" x:Name="ButtonExpressDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right" Click="ButtonExpressDequeue_Click"/>
+            <Button Grid.Row="2" x:Name="ButtonExpressDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right" Click="ButtonExpressDequeue_Click" ToolTip="Drone complete, add to finished"/>
             <Label Grid.Row="3" x:Name="LabelListViewRegular" Margin="3" Content="Regular Queue" HorizontalAlignment="Center" />
-            <ListView  Grid.Row="4"  x:Name="ListViewServiceRegular"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceRegular_SelectionChanged">
+            <ListView  Grid.Row="4"  x:Name="ListViewServiceRegular"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceRegular_SelectionChanged" ToolTip="Displays drone regular service queue">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path= ClientName}"/>
@@ -104,7 +104,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Button Grid.Row="5"  x:Name="ButtonRegularDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right"  Click="ButtonRegularDequeue_Click"/>
+            <Button Grid.Row="5"  x:Name="ButtonRegularDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right"  Click="ButtonRegularDequeue_Click" ToolTip="Drone complete, add to finished"/>
         </Grid>
 
         <Grid Grid.Column="2" Grid.Row="0"  x:Name="FinishedListViewGrid" Margin="10,10,10,10">
@@ -116,7 +116,7 @@
 
             <Label Grid.Column="0" Grid.Row="0" x:Name="LabelFinishedList" Margin="3" Content="Drones completed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <ListView Grid.Column="0" Grid.Row="1" x:Name="ListViewFinishedItems"  Margin="6" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ListViewFinishedItems_MouseDoubleClick">
+            <ListView Grid.Column="0" Grid.Row="1" x:Name="ListViewFinishedItems"  Margin="6" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ListViewFinishedItems_MouseDoubleClick" ToolTip="Displays drones finished, awaiting payment">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
@@ -125,7 +125,7 @@
                 </ListView.View>
             </ListView>
 
-            <Button Grid.Column="0" Grid.Row="2" Margin="12" x:Name="ButtonPaid" Content="Paid" HorizontalAlignment="Right" Click="ButtonPaid_Click" />
+            <Button Grid.Column="0" Grid.Row="2" Margin="12" x:Name="ButtonPaid" Content="Client Paid" HorizontalAlignment="Right" Click="ButtonPaid_Click" ToolTip="Once client has paid, remove drone from finished list"/>
 
         </Grid>
 

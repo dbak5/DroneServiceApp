@@ -34,12 +34,12 @@ namespace DroneServiceApp
 
         private const int RegularCost = 200;
 
-        #region Buttons and Events
+        //CHECK THESE WITH LECTURER
+        // Q6.11 Custom method to increment service tag control
+        // Q6.8 Custom method to display regular service queue in ListView
+        // Q6.9 Custom method to display express service queue in ListView
 
-        // Q6.11 Custom method to increment service tag control - ASK LECTURER
-        // Q6.8 Custom method to display regular service queue in ListView - ASK LECTURER
-        // Q6.9 Custom method to display express service queue in ListView - ASK LECTURER
-        // TOOLTIPS
+        #region Buttons and Events
 
         /// <summary>
         /// 6.5 Create a button method called “AddNewItem”
@@ -48,27 +48,20 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void ButtonAddNew_Click(object sender, RoutedEventArgs e)
         {
-            var clientName = TextBoxClientName.Text;
-            var droneModel = TextBoxModel.Text;
-            var serviceProblem = TextBoxProblem.Text;
-            var serviceCost = double.Parse(TextBoxCost.Text);
-            var serviceTag = int.Parse(TextBoxServiceTag.Text);
-            var servicePriority = GetServicePriority().ToString();
+            if (CheckInputEmpty(TextBoxClientName.Text, "Please enter a name", TextBoxClientName)) return;
+            if (CheckInputEmpty(TextBoxModel.Text, "Please enter a drone model", TextBoxModel)) return;
+            if (CheckInputEmpty(GetServicePriority(), "Please specify service priority", RadioButtonRegular)) return;
+            if (CheckInputEmpty(TextBoxCost.Text.ToString(CultureInfo.CurrentCulture),
+                    "Please select a service priority", RadioButtonRegular)) return;
+            if (CheckInputEmpty(TextBoxServiceTag.Text, "Please tag service", TextBoxServiceTag)) return;
+            if (CheckInputEmpty(TextBoxProblem.Text, "Please enter a service or repair issue", TextBoxProblem)) return;
 
-            // CHECK REFACTOR THIS
-            if (!CheckTextBoxEmpty(clientName)) return;
-            if (!CheckTextBoxEmpty(droneModel)) return;
-            if (!CheckTextBoxEmpty(serviceProblem)) return;
-            if (!CheckTextBoxEmpty(serviceCost.ToString("C",CultureInfo.CurrentCulture))) return;
-            if (!CheckTextBoxEmpty(serviceTag.ToString())) return;
-            if (!CheckTextBoxEmpty(servicePriority)) return;
-            if (serviceCost < 0) return;
+            double.TryParse(TextBoxCost.Text.TrimStart('$'), out var serviceCost);
+            int.TryParse(TextBoxServiceTag.Text, out var serviceTag);
 
-            AddNewItem(clientName, droneModel, serviceProblem, serviceCost, serviceTag, servicePriority);
-            ClearTextBoxes();
+            AddNewItem(TextBoxClientName.Text, TextBoxModel.Text, TextBoxProblem.Text, serviceCost, serviceTag, GetServicePriority());
         }
 
-        //CHECK THIS ISNT WORKING NOW
         /// <summary>
         ///  Q6.10 Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point
         /// </summary>
@@ -171,7 +164,9 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBoxCost.Text = RegularCost.ToString("C", CultureInfo.CurrentCulture);
+            TextBoxCost.IsEnabled = false;
+            TextBoxServiceTag.Text = "100";
+
         }
 
         #endregion
@@ -201,11 +196,13 @@ namespace DroneServiceApp
                     RegularQueue.Enqueue(newDrone);
                     ListViewServiceRegular.Items.Add(newDrone);
                     UpdateStatusStrip("Drone added to regular service queue");
+                    ClearTextBoxes();
                     break;
                 case "Express":
                     ExpressQueue.Enqueue(newDrone);
                     ListViewServiceExpress.Items.Add(newDrone);
                     UpdateStatusStrip("Drone added to express service queue");
+                    ClearTextBoxes();
                     break;
             }
         }
@@ -214,16 +211,16 @@ namespace DroneServiceApp
         /// Q6.7 Create a custom method called “GetServicePriority”
         /// </summary>
         /// <returns></returns>
-        private object GetServicePriority()
+        private string GetServicePriority()
         {
             if (RadioButtonExpress.IsChecked == true)
             {
-                return RadioButtonExpress.Content;
+                return RadioButtonExpress.Content.ToString();
             }
 
             if (RadioButtonRegular.IsChecked == true)
             {
-                return RadioButtonRegular.Content;
+                return RadioButtonRegular.Content.ToString();
             }
 
             return "";
@@ -235,6 +232,11 @@ namespace DroneServiceApp
         private void RemoveFinishedItems()
         {
             var selectedItem = (Drone)ListViewFinishedItems.SelectedItem;
+            if (selectedItem == null)
+            {
+                UpdateStatusStrip("Please select item");
+                return;
+            }
             FinishedList.Remove(selectedItem);
             ListViewFinishedItems.Items.Remove(selectedItem);
             UpdateStatusStrip("Drone removed from finished items");
@@ -360,14 +362,21 @@ namespace DroneServiceApp
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        private static bool CheckTextBoxEmpty(string content)
+        private bool CheckInputEmpty(string content, string message, IInputElement input)
         {
-            return !string.IsNullOrEmpty(content);
+            if (string.IsNullOrEmpty(content))
+            {
+                UpdateStatusStrip(message);
+                input.Focus();
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
 
-     
+
     }
     
 }
