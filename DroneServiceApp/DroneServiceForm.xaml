@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Drone Service Application"
         DataContext="{Binding}" Height="560" Width="815" Loaded="Window_Loaded" >
@@ -43,9 +44,12 @@
             <TextBox Grid.Column="1" Grid.Row="2"  x:Name="TextBoxModel" Margin="6" VerticalContentAlignment="Center" ToolTip="Enter drone model" />
 
             <Label  Grid.Column="0" Grid.Row="3"  x:Name="LabelServiceTag" Content="Service Tag" Margin="6" />
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Margin="6" Minimum="100" Maximum="900" Increment="10" TextAlignment="Left" ToolTip="Select service tag number" VerticalContentAlignment="Center"  x:Name="TextBoxServiceTag" />
+            <wpfx:IntegerUpDown Grid.Column="1" Grid.Row="3" Margin="6" Minimum="100" Maximum="900" Increment="10" TextAlignment="Left" ToolTip="Select service tag number" VerticalContentAlignment="Center"  x:Name="TextBoxServiceTag" />
 
-            <GroupBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  x:Name="GroupBoxRadioButtons" Header="Service Priority" Padding="6"  Margin="6" ToolTip="Select a service priority">
+            <Label Grid.Column="0" Grid.Row="4" x:Name="LabelCost" Content="Service Cost" Margin="6"  VerticalAlignment="Center" />
+            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" Margin="6" VerticalContentAlignment="Center"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" ToolTip="Cost calculated once service priority selected" />
+
+            <GroupBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"  x:Name="GroupBoxRadioButtons" Header="Service Priority" Padding="6"  Margin="6" ToolTip="Select a service priority">
                 <Grid  HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -54,13 +58,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <RadioButton x:Name="RadioButtonRegular" GroupName="groupNameServicePriority" Grid.Column="0" Grid.Row="0"  Content="Regular" Margin="12" Checked="RadioButtonRegular_Checked" />
-                    <RadioButton x:Name="RadioButtonExpress" GroupName="groupNameServicePriority" Grid.Column="1" Grid.Row="0" Content="Express" Margin="12" Checked="RadioButtonExpress_Checked" />
+                    <RadioButton x:Name="RadioButtonRegular" GroupName="groupNameServicePriority" Grid.Column="0" Grid.Row="0"  Content="Regular" Margin="12" />
+                    <RadioButton x:Name="RadioButtonExpress" GroupName="groupNameServicePriority" Grid.Column="1" Grid.Row="0" Content="Express" Margin="12" />
                 </Grid>
             </GroupBox>
-
-            <Label Grid.Column="0" Grid.Row="5" x:Name="LabelCost" Content="Service Cost" Margin="6"  VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="5" Margin="6" VerticalContentAlignment="Center"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" ToolTip="Cost calculated once service priority selected" />
 
             <Label Grid.Column="0" Grid.Row="6"  x:Name="LabelProblem" Content="Service Problem"  VerticalAlignment="Top" Margin="6"  />
             <TextBox Grid.Column="1" Grid.Row="6"  x:Name="TextBoxProblem" Margin="6" VerticalContentAlignment="Top"  AcceptsReturn="True" TextWrapping="Wrap" ToolTip="Describe service issue"/>

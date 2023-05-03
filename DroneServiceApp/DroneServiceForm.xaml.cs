@@ -24,6 +24,7 @@ namespace DroneServiceApp
             DataContext = this;
         }
 
+        // List for drones finished service
         public List<Drone> FinishedList = new();
 
         // Q6.4 Queue of drone class (express service)
@@ -32,12 +33,14 @@ namespace DroneServiceApp
         // Q6.3 Queue of drone class (regular service)
         public Queue<Drone> RegularQueue = new();
 
-        private const int RegularCost = 200;
-
         //CHECK THESE WITH LECTURER
+
         // Q6.11 Custom method to increment service tag control
+        // Does this need to increment automatically
+
         // Q6.8 Custom method to display regular service queue in ListView
         // Q6.9 Custom method to display express service queue in ListView
+        // I've used bindings... 
 
         #region Buttons and Events
 
@@ -50,18 +53,21 @@ namespace DroneServiceApp
         {
             if (CheckInputEmpty(TextBoxClientName.Text, "Please enter a name", TextBoxClientName)) return;
             if (CheckInputEmpty(TextBoxModel.Text, "Please enter a drone model", TextBoxModel)) return;
-            if (CheckInputEmpty(GetServicePriority(), "Please specify service priority", RadioButtonRegular)) return;
             if (CheckInputEmpty(TextBoxCost.Text.ToString(CultureInfo.CurrentCulture),
-                    "Please select a service priority", RadioButtonRegular)) return;
+                    "Please enter a service cost", TextBoxCost)) return;
+            if (CheckInputEmpty(GetServicePriority(), "Please specify service priority", RadioButtonRegular)) return;
             if (CheckInputEmpty(TextBoxServiceTag.Text, "Please tag service", TextBoxServiceTag)) return;
             if (CheckInputEmpty(TextBoxProblem.Text, "Please enter a service or repair issue", TextBoxProblem)) return;
 
             double.TryParse(TextBoxCost.Text.TrimStart('$'), out var serviceCost);
             int.TryParse(TextBoxServiceTag.Text, out var serviceTag);
 
+
+
             AddNewItem(TextBoxClientName.Text, TextBoxModel.Text, TextBoxProblem.Text, serviceCost, serviceTag, GetServicePriority());
         }
 
+        // CHECK NEED TO FIX THE SERVICE COST MUST ACCEPT A DOUBLE ONLY WITH ONE DECIMAL PLACE
         /// <summary>
         ///  Q6.10 Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point
         /// </summary>
@@ -69,7 +75,27 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = CheckNumeric(e.Text);
+            // Check if the input is a digit or a decimal point
+            if (!char.IsDigit(e.Text, e.Text.Length - 1) && e.Text != ".")
+            {
+                e.Handled = true; // Cancel the input if it's not a digit or a decimal point
+                return;
+            }
+
+            // Check if the input would result in a valid double value
+            var textBox = (TextBox)sender;
+            var text = textBox.Text.Insert(textBox.SelectionStart, e.Text);
+            if (!double.TryParse(text, out _))
+            {
+                e.Handled = true; // Cancel the input if it's not a valid double value
+                return;
+            }
+
+            // Check if the input would result in more than one decimal point
+            if (e.Text == "." && textBox.Text.Contains("."))
+            {
+                e.Handled = true; // Cancel the input if it would result in more than one decimal point
+            }
         }
 
         /// <summary>
@@ -137,36 +163,13 @@ namespace DroneServiceApp
         }
 
         /// <summary>
-        /// Q6.6 Increase express service by 15% 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RadioButtonExpress_Checked(object sender, RoutedEventArgs e)
-        {
-                const double expressCost = RegularCost * 1.15;
-                TextBoxCost.Text = expressCost.ToString("C", CultureInfo.CurrentCulture);
-        }
-
-        /// <summary>
-        /// Set default cost for a regular service when radio button checked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RadioButtonRegular_Checked(object sender, RoutedEventArgs e)
-        {
-            TextBoxCost.Text = RegularCost.ToString("C", CultureInfo.CurrentCulture);
-        }
-
-        /// <summary>
-        /// Set default cost for a regular service on window load
+        /// Set initial service tag too 100
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBoxCost.IsEnabled = false;
             TextBoxServiceTag.Text = "100";
-
         }
 
         #endregion
@@ -185,11 +188,17 @@ namespace DroneServiceApp
         private void AddNewItem(string clientName, string droneModel, string serviceProblem, double serviceCost,
             int serviceTag, string servicePriority)
         {
+            if (servicePriority == "Express")
+            {
+                serviceCost *= 1.15;
+            }
+
             var newDrone = new Drone();
             {
                 SetDroneProperties(newDrone, clientName, droneModel, serviceProblem, serviceCost, serviceTag,
                     servicePriority);
             }
+
             switch (servicePriority)
             {
                 case "Regular":
@@ -201,7 +210,7 @@ namespace DroneServiceApp
                 case "Express":
                     ExpressQueue.Enqueue(newDrone);
                     ListViewServiceExpress.Items.Add(newDrone);
-                    UpdateStatusStrip("Drone added to express service queue");
+                    UpdateStatusStrip("Drone added to express service queue, 15% added to cost");
                     ClearTextBoxes();
                     break;
             }
@@ -291,6 +300,7 @@ namespace DroneServiceApp
             queue.Dequeue();
         }
 
+        //CHECK ISSUES WITH SELECTING AND THEN DEQUEUE
         /// <summary>
         /// Select item from list view and display in text boxes
         /// </summary>
