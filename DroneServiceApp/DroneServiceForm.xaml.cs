@@ -184,8 +184,6 @@ namespace DroneServiceApp
 
         #region Methods
 
-        //CHECK THESE WITH LECTURER
-        // Q6.11 Create a custom method to increment the service tag control, this method must be called inside the “AddNewItem” method before the new service item is added to a queue
         /// <summary>
         /// Q6.5 Add new method
         /// Q6.6 Before a new service item is added to the Express Queue the service cost must be increased by 15%. 
@@ -354,7 +352,7 @@ namespace DroneServiceApp
             }
         }
 
-        //CHECK CANT GET THIS TO WORK
+        //CHECK CANT GET THIS TO WORK - PROPERTIES ARE PRIVATE
         /// <summary>
         /// Q6.8 Custom method to display regular service queue in ListView
         /// Q6.9 Custom method to display express service queue in ListView
@@ -367,6 +365,14 @@ namespace DroneServiceApp
             listView.ItemsSource = queue;
         }
 
+        // CHECK THESE WITH LECTURER - WHY CREATE NUMERIC CONTROL WHEN THIS IS INCREMENTED AUTOMATICALLY
+        /// <summary>
+        /// Q6.11 Create a custom method to increment the service tag control, this method must be called inside the “AddNewItem” method before the new service item is added to a queue
+        /// </summary>
+        private void IncrementServiceTag()
+        {
+
+        }
         #endregion
 
         #region Booleans for errors

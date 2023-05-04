@@ -10,10 +10,9 @@ using System.Globalization;
 
 namespace DroneServiceApp
 {
+    // Q6.1 Create a separate class file to hold the data items of the Drone.
     public class Drone
     {
-        // Q6.1 Create a separate class file to hold the data items of the Drone.
-        // Add a display method that returns a string for Client Name and Service Cost - CHECK ASK LECTURER
         // CHECK CANT GET DISPLAY IN LIST VIEW IF PROPERTIES ARE PRIVATE
         #region Properties
         // ReSharper disable InconsistentNaming
@@ -31,7 +30,6 @@ namespace DroneServiceApp
       
         }
 
-        // Constructor with all properties
         public Drone(string clientName, string droneModel, string serviceProblem, double serviceCost, int serviceTag, string servicePriority)
         {
             ClientName = clientName;
@@ -43,8 +41,9 @@ namespace DroneServiceApp
         }
         #endregion
 
-        #region Getters and Setters
         // Use separate getter and setter methods, ensure the attributes are private and the accessor methods are public. 
+        #region Getters and Setters
+
         // Add suitable code to the Client Name accessor method so the data is formatted as Title case
         public void SetClientName(string newClientName)
         {
