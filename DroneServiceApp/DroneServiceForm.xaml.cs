@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace DroneServiceApp
     /// <summary>
     /// Interaction logic for DroneServiceForm.xaml
     /// </summary>
-    public partial class DroneServiceForm : Window
+    public partial class DroneServiceForm
     {
         public DroneServiceForm()
         {
@@ -38,10 +39,6 @@ namespace DroneServiceApp
 
         // Q6.11 Custom method to increment service tag control
         // Does this need to increment automatically
-
-        // Q6.8 Custom method to display regular service queue in ListView
-        // Q6.9 Custom method to display express service queue in ListView
-        // I've used bindings... 
 
         #region Buttons and Events
 
@@ -204,7 +201,7 @@ namespace DroneServiceApp
         {
             if (servicePriority == "Express")
             {
-                serviceCost *= 1.15;
+                serviceCost = Math.Round(serviceCost * 1.15, 2);
             }
 
             var newDrone = new Drone();
@@ -314,7 +311,6 @@ namespace DroneServiceApp
             queue.Dequeue();
         }
 
-        //CHECK ISSUES WITH SELECTING AND THEN DEQUEUE
         /// <summary>
         /// Select item from list view and display in text boxes
         /// </summary>
@@ -322,6 +318,7 @@ namespace DroneServiceApp
         private void SelectItemListView(Selector listView)
         {
             var selectedItem = (Drone)listView.SelectedItem;
+            if (selectedItem == null) return;
             TextBoxClientName.Text = selectedItem.ClientName;
             TextBoxModel.Text = selectedItem.DroneModel;
             TextBoxProblem.Text = selectedItem.ServiceProblem;
@@ -356,6 +353,19 @@ namespace DroneServiceApp
             }
         }
 
+        //CHECK CANT GET THIS TO WORK
+        /// <summary>
+        /// Q6.8 Custom method to display regular service queue in ListView
+        /// Q6.9 Custom method to display express service queue in ListView
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <param name="listView"></param>
+        private static void DisplayQueue(IEnumerable<Drone> queue, ItemsControl listView)
+        {
+            // Set the ItemsSource of the ListView
+            listView.ItemsSource = queue;
+        }
+
         #endregion
 
         #region Booleans for errors
@@ -375,6 +385,8 @@ namespace DroneServiceApp
         /// Check if text box is empty
         /// </summary>
         /// <param name="content"></param>
+        /// <param name="message"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         private bool CheckInputEmpty(string content, string message, IInputElement input)
         {

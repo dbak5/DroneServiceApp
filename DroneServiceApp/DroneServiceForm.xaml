@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Drone Service Application"
@@ -87,7 +86,7 @@
                         <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path=ClientName}"/>
                         <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
                         <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding Path= ServiceTag}"/>
-                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path= ServiceCost}"/>
+                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path= ServiceCost, StringFormat={}{0:C}}"/>
                         <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding Path= ServiceProblem}"/>
                     </GridView>
                 </ListView.View>
@@ -100,7 +99,7 @@
                         <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path= ClientName}"/>
                         <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
                         <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding Path=ServiceTag}"/>
-                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path=ServiceCost}"/>
+                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path=ServiceCost, StringFormat={}{0:C}}"/>
                         <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding Path=ServiceProblem}"/>
                     </GridView>
                 </ListView.View>
@@ -121,7 +120,7 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
-                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding ServiceCost}"/>
+                        <GridViewColumn Header="Service Cost" DisplayMemberBinding="{Binding ServiceCost, StringFormat={}{0:C}}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

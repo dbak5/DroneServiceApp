@@ -6,7 +6,6 @@
 // Q6.1 Separate class file
 
 using System;
-using System.Collections.ObjectModel;
 
 namespace DroneServiceApp
 {
