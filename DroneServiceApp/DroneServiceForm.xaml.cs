@@ -26,24 +26,21 @@ namespace DroneServiceApp
             DataContext = this;
         }
 
-        // List for drones finished service
+        // Q6.2 Create a global List<T> of type Drone called “FinishedList”
         public List<Drone> FinishedList = new();
 
-        // Q6.4 Queue of drone class (express service)
-        public Queue<Drone> ExpressQueue = new();
-
-        // Q6.3 Queue of drone class (regular service)
+        // Q6.3 Create a global Queue<T> of type Drone called “RegularService”
         public Queue<Drone> RegularQueue = new();
 
-        //CHECK THESE WITH LECTURER
-
-        // Q6.11 Custom method to increment service tag control
-        // Does this need to increment automatically
+        // Q6.4 Create a global Queue<T> of type Drone called “ExpressService”
+        public Queue<Drone> ExpressQueue = new();
 
         #region Buttons and Events
 
         /// <summary>
-        /// 6.5 Create a button method called “AddNewItem”
+        /// Q6.5 Create a button method called “AddNewItem” that will add a new service item to a Queue based on the priority.
+        /// Use TextBoxes for the Client Name, Drone Model, Service Problem and Service Cost.
+        /// Use a numeric up/down control for the Service Tag.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -110,7 +107,7 @@ namespace DroneServiceApp
         }
 
         /// <summary>
-        /// Q6.12 Mouse click method to populate textbox from regular service ListView
+        /// Q6.12 Create a mouse click method for the regular service ListView that will display the Client Name and Service Problem in the related textboxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,7 +117,7 @@ namespace DroneServiceApp
         }
 
         /// <summary>
-        /// Q6.13 Mouse click method to populate textbox from express service ListView
+        /// Q6.13 Create a mouse click method for the express service ListView that will display the Client Name and Service Problem in the related textboxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -187,8 +184,11 @@ namespace DroneServiceApp
 
         #region Methods
 
+        //CHECK THESE WITH LECTURER
+        // Q6.11 Create a custom method to increment the service tag control, this method must be called inside the “AddNewItem” method before the new service item is added to a queue
         /// <summary>
         /// Q6.5 Add new method
+        /// Q6.6 Before a new service item is added to the Express Queue the service cost must be increased by 15%. 
         /// </summary>
         /// <param name="clientName"></param>
         /// <param name="droneModel"></param>
@@ -210,6 +210,7 @@ namespace DroneServiceApp
                     servicePriority);
             }
 
+            // The new service item will be added to the appropriate Queue based on the Priority radio button. 
             switch (servicePriority)
             {
                 case "Regular":
@@ -228,7 +229,7 @@ namespace DroneServiceApp
         }
 
         /// <summary>
-        /// Q6.7 Create a custom method called “GetServicePriority”
+        /// Q6.7 Create a custom method called “GetServicePriority” which returns the value of the priority radio group.
         /// </summary>
         /// <returns></returns>
         private string GetServicePriority()

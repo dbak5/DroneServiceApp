@@ -6,14 +6,16 @@
 // Q6.1 Separate class file
 
 using System;
+using System.Globalization;
 
 namespace DroneServiceApp
 {
     public class Drone
     {
-        // Q6.2 List of Class
-
-        // Declare variables
+        // Q6.1 Create a separate class file to hold the data items of the Drone.
+        // Add a display method that returns a string for Client Name and Service Cost - CHECK ASK LECTURER
+        // CHECK CANT GET DISPLAY IN LIST VIEW IF PROPERTIES ARE PRIVATE
+        #region Properties
         // ReSharper disable InconsistentNaming
         public string ClientName { get; private set; }
         public string DroneModel { get; private set; }
@@ -21,7 +23,9 @@ namespace DroneServiceApp
         public string ServicePriority { get; private set; }
         public double ServiceCost { get; private set; }
         public int ServiceTag { get; private set; }
+        #endregion
 
+        #region Constructors
         public Drone()
         {
       
@@ -37,13 +41,15 @@ namespace DroneServiceApp
             ServiceTag = serviceTag;
             ServicePriority = servicePriority;
         }
+        #endregion
 
         #region Getters and Setters
-
+        // Use separate getter and setter methods, ensure the attributes are private and the accessor methods are public. 
+        // Add suitable code to the Client Name accessor method so the data is formatted as Title case
         public void SetClientName(string newClientName)
         {
-            ClientName = newClientName;
-            // capitalisaing can be done here
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
+            ClientName =  textInfo.ToTitleCase(newClientName.ToLower());
         }
 
         public void SetDroneModel(string newDroneModel)
@@ -51,9 +57,11 @@ namespace DroneServiceApp
             DroneModel = newDroneModel;
         }
 
+        // Add suitable code to the Service Problem accessor method so the data is formatted as sentence case
         public void SetServiceProblem(string serviceProblem)
         {
-            ServiceProblem = serviceProblem;
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
+            ServiceProblem = textInfo.ToTitleCase(serviceProblem[0].ToString()) + serviceProblem[1..].ToLower();
         }
 
         public void SetServiceCost(double serviceCost)
