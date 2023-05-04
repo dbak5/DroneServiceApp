@@ -47,7 +47,7 @@
             <wpfx:IntegerUpDown Grid.Column="1" Grid.Row="3" Margin="6" Minimum="100" Maximum="900" Increment="10" TextAlignment="Left" ToolTip="Select service tag number" VerticalContentAlignment="Center"  x:Name="TextBoxServiceTag" />
 
             <Label Grid.Column="0" Grid.Row="4" x:Name="LabelCost" Content="Service Cost" Margin="6"  VerticalAlignment="Center" />
-            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" Margin="6" VerticalContentAlignment="Center"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" ToolTip="Cost calculated once service priority selected" />
+            <TextBox x:Name="TextBoxCost" Grid.Column="1" Grid.Row="4" Margin="6" VerticalContentAlignment="Center"  TextInput="TextBoxCost_PreviewTextInput" InputScope="Number" PreviewTextInput="TextBoxCost_PreviewTextInput" ToolTip="Please enter regular service cost, express calculated on add" />
 
             <GroupBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"  x:Name="GroupBoxRadioButtons" Header="Service Priority" Padding="6"  Margin="6" ToolTip="Select a service priority">
                 <Grid  HorizontalAlignment="Right">

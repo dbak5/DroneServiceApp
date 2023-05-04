@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -62,12 +63,9 @@ namespace DroneServiceApp
             double.TryParse(TextBoxCost.Text.TrimStart('$'), out var serviceCost);
             int.TryParse(TextBoxServiceTag.Text, out var serviceTag);
 
-
-
             AddNewItem(TextBoxClientName.Text, TextBoxModel.Text, TextBoxProblem.Text, serviceCost, serviceTag, GetServicePriority());
         }
 
-        // CHECK NEED TO FIX THE SERVICE COST MUST ACCEPT A DOUBLE ONLY WITH ONE DECIMAL PLACE
         /// <summary>
         ///  Q6.10 Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point
         /// </summary>
@@ -75,26 +73,42 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Check if the input is a digit or a decimal point
+            var text = TextBoxCost.Text;
+            var textBox = (TextBox)sender;
+
+            // Check if the input is a digit or a decimal point, cancel input if it's not
             if (!char.IsDigit(e.Text, e.Text.Length - 1) && e.Text != ".")
             {
-                e.Handled = true; // Cancel the input if it's not a digit or a decimal point
+                e.Handled = true; 
                 return;
             }
 
-            // Check if the input would result in a valid double value
-            var textBox = (TextBox)sender;
-            var text = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            if (!double.TryParse(text, out _))
+            // Check if the input would result in a valid double, cancel the input if not
+            var newText = text.Insert(textBox.SelectionStart, e.Text);
+            if (!double.TryParse(newText, out _))
             {
-                e.Handled = true; // Cancel the input if it's not a valid double value
+                e.Handled = true; 
                 return;
             }
 
-            // Check if the input would result in more than one decimal point
-            if (e.Text == "." && textBox.Text.Contains("."))
+            // Check if a decimal point already exists, cancel the input if it does
+            if (e.Text == "." && text.Contains("."))
             {
-                e.Handled = true; // Cancel the input if it would result in more than one decimal point
+                e.Handled = true; 
+                return;
+            }
+
+            // Check if the input would result in more than two decimal places after the decimal point
+            // If decimalIndex = -1, no decimal has been entered yet
+            // Split textbox text by decimal place, add values to an array
+            // If the last value of the array is greater than 1 in length, cancel input
+            var decimalIndex = text.IndexOf('.');
+            var words = text.Split('.');
+            var lastValue = words.Last();
+
+            if (decimalIndex >= 0 && lastValue.Length > 1)
+            {
+                e.Handled = true; 
             }
         }
 
@@ -355,16 +369,6 @@ namespace DroneServiceApp
         {
             return queue != null && queue.Count == 0;
 
-        }
-
-        /// <summary>
-        /// Check if text is numeric using regular expressions
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        private static bool CheckNumeric(string text)
-        {
-            return System.Text.RegularExpressions.Regex.IsMatch(text, "[^0-9]+[.]");
         }
 
         /// <summary>
