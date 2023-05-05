@@ -15,11 +15,6 @@ using System.Windows.Input;
 // Organisation: South Metropolitan TAFE
 // Description: Drone Service Application to log drones for service and repair
 
-//CHECK CLOSE TRACE LISTENER ON FORM CLOSE
-//CHECK MESSAGE BOXES TO APPEAR WHEN DEQUEUE OR PAYING
-//CHECK ADD COMMENTS TO XAML
-
-
 namespace DroneServiceApp
 {
     /// <summary>
@@ -27,6 +22,9 @@ namespace DroneServiceApp
     /// </summary>
     public partial class DroneServiceForm
     {
+
+        //CHECK ADD COMMENTS TO XAML
+
         public DroneServiceForm()
         {
             InitializeComponent();
@@ -239,7 +237,15 @@ namespace DroneServiceApp
             Trace.Listeners.Add(myTextListener);
         }
 
-
+        /// <summary>
+        /// Form closing, close trace listener
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Trace.Close();
+        }
         #endregion
 
         #region Methods
@@ -312,6 +318,7 @@ namespace DroneServiceApp
             return "";
         }
 
+        //CHECK MESSAGE BOX FOR CONFIRMATION
         /// <summary>
         /// Q6.16 Create a double mouse click method that will delete a service item from the finished listbox and remove the same item from the List
         /// </summary>
@@ -371,6 +378,7 @@ namespace DroneServiceApp
             newDrone.SetServicePriority(servicePriority);
         }
 
+        //CHECK MESSAGE BOX FOR CONFIRMATION
         /// <summary>
         /// Dequeue items, remove from list view and add to completed list and completed list view
         /// </summary>
@@ -495,5 +503,6 @@ namespace DroneServiceApp
         }
 
         #endregion
+
     }
 }

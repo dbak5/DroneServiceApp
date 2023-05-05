@@ -6,7 +6,7 @@
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Drone Service Application"
-        DataContext="{Binding}" Height="560" Width="815" Loaded="Window_Loaded" >
+        DataContext="{Binding}" Height="560" Width="815" Loaded="Window_Loaded" Closing="Window_Closing" >
     <Grid x:Name="FormGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15.534" />
