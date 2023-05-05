@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,6 +48,19 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void ButtonAddNew_Click(object sender, RoutedEventArgs e)
         {
+            Trace.WriteLine("\nAdd New item method started");
+            var text = TextBoxCost.Text;
+
+            Trace.Indent();
+            Trace.WriteLine("\nChecking if any inputs are empty");
+            Trace.Indent();
+            Trace.WriteLine("\nClient Name: " + TextBoxClientName.Text);
+            Trace.WriteLine("Drone Model: " + TextBoxModel.Text);
+            Trace.WriteLine("Service Cost: " + TextBoxCost.Text);
+            Trace.WriteLine("Service Priority: " + GetServicePriority());
+            Trace.WriteLine("Service Tag: " + TextBoxServiceTag.Text);
+            Trace.WriteLine("Service Problem: " + TextBoxProblem.Text);
+            Trace.Unindent();
             if (CheckInputEmpty(TextBoxClientName.Text, "Please enter a name", TextBoxClientName)) return;
             if (CheckInputEmpty(TextBoxModel.Text, "Please enter a drone model", TextBoxModel)) return;
             if (CheckInputEmpty(TextBoxCost.Text.ToString(CultureInfo.CurrentCulture),
@@ -58,6 +73,9 @@ namespace DroneServiceApp
             int.TryParse(TextBoxServiceTag.Text, out var serviceTag);
 
             AddNewItem(TextBoxClientName.Text, TextBoxModel.Text, TextBoxProblem.Text, serviceCost, serviceTag, GetServicePriority());
+            Trace.WriteLine("\nNew item added");
+            Trace.WriteLine("\nAdd New item method ended");
+            Trace.Unindent();
         }
 
         /// <summary>
@@ -67,43 +85,76 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
+            Trace.WriteLine("\nService cost textbox validation started\n");
             var text = TextBoxCost.Text;
             var textBox = (TextBox)sender;
 
             // Check if the input is a digit or a decimal point, cancel input if it's not
+            Trace.Indent();
+            Trace.WriteLine("Checking if the input is a digit or a decimal point");
             if (!char.IsDigit(e.Text, e.Text.Length - 1) && e.Text != ".")
             {
+                Trace.Indent();
+                Trace.WriteLine("Input value: " + e);
+                Trace.WriteLine("Input cancelled");
+                Trace.Unindent();
                 e.Handled = true; 
                 return;
             }
+            Trace.Unindent();
 
             // Check if the input would result in a valid double, cancel the input if not
+            Trace.Indent();
+            Trace.WriteLine("Checking if the input would result in a valid double");
             var newText = text.Insert(textBox.SelectionStart, e.Text);
             if (!double.TryParse(newText, out _))
             {
+                Trace.Indent();
+                Trace.WriteLine("Code: !double.TryParse(newText, out _)");
+                Trace.WriteLine("Result: " + !double.TryParse(newText, out _));
+                Trace.WriteLine("Input cancelled");
+                Trace.Unindent();
                 e.Handled = true; 
                 return;
             }
+            Trace.Unindent();
 
             // Check if a decimal point already exists, cancel the input if it does
+            Trace.Indent();
+            Trace.WriteLine("Checking if a decimal point already exists");
             if (e.Text == "." && text.Contains("."))
             {
+                Trace.Indent();
+                Trace.WriteLine("Code: e.Text == \".\" && text.Contains(\".\")");
+                Trace.WriteLine("Result: " + (e.Text == "." && text.Contains(".")));
+                Trace.WriteLine("Input cancelled");
+                Trace.Unindent();
                 e.Handled = true; 
                 return;
             }
+            Trace.Unindent();
 
             // Check if the input would result in more than two decimal places after the decimal point
             // If decimalIndex = -1, no decimal has been entered yet
             // Split textbox text by decimal place, add values to an array
             // If the last value of the array is greater than 1 in length, cancel input
+            Trace.Indent();
+            Trace.WriteLine("Checking if the input would result in more than two decimal places after the decimal point");
             var decimalIndex = text.IndexOf('.');
             var words = text.Split('.');
             var lastValue = words.Last();
-
             if (decimalIndex >= 0 && lastValue.Length > 1)
             {
+                Trace.Indent();
+                Trace.WriteLine("Code: decimalIndex >= 0 && lastValue.Length > 1");
+                Trace.WriteLine("Result: " + (decimalIndex >= 0 && lastValue.Length > 1));
+                Trace.WriteLine("Input cancelled");
+                Trace.Unindent();
                 e.Handled = true; 
             }
+            Trace.Unindent();
+
+            Trace.WriteLine("\nService cost textbox validation ended");
         }
 
         /// <summary>
@@ -171,14 +222,20 @@ namespace DroneServiceApp
         }
 
         /// <summary>
-        /// Set initial service tag too 100
+        /// Form loading
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             TextBoxServiceTag.Text = "100";
+            Stream myFile = File.Create("TestFile.txt");
+            var myTextListener = new TextWriterTraceListener(myFile);
+            Trace.Listeners.Add(myTextListener);
         }
+
+        //CHECK CLOSE TRACE LISTENER ON FORM CLOSE
+        //CHECK MESSAGE BOXES TO APPEAR WHEN DEQUEUE OR PAYING
 
         #endregion
 
@@ -197,9 +254,16 @@ namespace DroneServiceApp
         private void AddNewItem(string clientName, string droneModel, string serviceProblem, double serviceCost,
             int serviceTag, string servicePriority)
         {
+            Trace.WriteLine("\nService priority is express, service cost calculation starting");
             if (servicePriority == "Express")
             {
+                Trace.Indent();
+                Trace.WriteLine("\nService cost: " + serviceCost);
+                Trace.WriteLine("\nCalculation: serviceCost * 1.15, 2");
+                Trace.WriteLine("\nExpress service cost result: " + (serviceCost * 1.15, 2));
+                Trace.Unindent();
                 serviceCost = Math.Round(serviceCost * 1.15, 2);
+                Trace.WriteLine("\nService cost calculation ended");
             }
 
             var newDrone = new Drone();
@@ -250,6 +314,7 @@ namespace DroneServiceApp
         /// </summary>
         private void RemoveFinishedItems()
         {
+            Trace.WriteLine("\nRemove finished items starting\n");
             var selectedItem = (Drone)ListViewFinishedItems.SelectedItem;
             if (selectedItem == null)
             {
@@ -257,7 +322,14 @@ namespace DroneServiceApp
                 return;
             }
             FinishedList.Remove(selectedItem);
+            Trace.Indent();
+            Trace.WriteLine("\nDrone removed from finished list");
+
             ListViewFinishedItems.Items.Remove(selectedItem);
+            Trace.WriteLine("\nDrone removed from finished list view");
+            Trace.Unindent();
+
+            Trace.WriteLine("\nRemove finished items ended");
             UpdateStatusStrip("Drone removed from finished items");
         }
 
@@ -303,11 +375,23 @@ namespace DroneServiceApp
         /// <param name="listView"></param>
         private void RemoveAndDequeue(Queue<Drone> queue, ItemsControl listView)
         {
+            Trace.WriteLine("\nDequeue service item started");
+            Trace.Indent();
             var selectedItem = queue.Peek();
+
             FinishedList.Add(selectedItem);
+            Trace.WriteLine("\nAdded item to finished list");
+
             ListViewFinishedItems.Items.Add(selectedItem);
+            Trace.WriteLine("\nAdded item to finished list view");
+
             listView.Items.Remove(selectedItem);
+            Trace.WriteLine("\nRemoved item from regular or express list view");
+
             queue.Dequeue();
+            Trace.WriteLine("\nRemoved item from regular or express queue");
+            Trace.Unindent();
+            Trace.WriteLine("\nDequeue service item ended");
         }
 
         /// <summary>
@@ -325,7 +409,7 @@ namespace DroneServiceApp
             TextBoxServiceTag.Text = selectedItem.ServiceTag.ToString();
             SetRadioButton(selectedItem.ServicePriority);
         }
-
+        
         /// <summary>
         /// Update status strip
         /// </summary>
@@ -408,8 +492,5 @@ namespace DroneServiceApp
         }
 
         #endregion
-
-
     }
-    
 }

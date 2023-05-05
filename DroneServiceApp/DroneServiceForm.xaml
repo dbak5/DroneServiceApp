@@ -9,16 +9,18 @@
         DataContext="{Binding}" Height="560" Width="815" Loaded="Window_Loaded" >
     <Grid x:Name="FormGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="15.534" />
+            <ColumnDefinition Width="234.466"/>
             <ColumnDefinition Width="350" />
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="15.922"/>
+            <ColumnDefinition Width="184.078"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="490" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Grid.Row="0" x:Name="InputsGrid" Margin="10,10,10,10">
+        <Grid Grid.Column="0" Grid.Row="0" x:Name="InputsGrid" Margin="10,10,10,10" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -69,7 +71,7 @@
 
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="0" x:Name="ListViewGrid" Margin="10,10,10,10"  >
+        <Grid Grid.Column="2" Grid.Row="0" x:Name="ListViewGrid" Margin="10,10,10,10"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -107,7 +109,7 @@
             <Button Grid.Row="5"  x:Name="ButtonRegularDequeue" Margin="12" Content="Service Complete" HorizontalAlignment="Right"  Click="ButtonRegularDequeue_Click" ToolTip="Drone complete, add to finished"/>
         </Grid>
 
-        <Grid Grid.Column="2" Grid.Row="0"  x:Name="FinishedListViewGrid" Margin="10,10,10,10">
+        <Grid Grid.Column="3" Grid.Row="0"  x:Name="FinishedListViewGrid" Margin="10,10,10,10" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -129,7 +131,7 @@
 
         </Grid>
 
-        <StatusBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="StatusBar"  >
+        <StatusBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="StatusBar"  >
             <StatusBarItem>
                 <TextBlock Name="StatusBarMessage" />
             </StatusBarItem>
