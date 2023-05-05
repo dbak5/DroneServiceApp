@@ -15,6 +15,11 @@ using System.Windows.Input;
 // Organisation: South Metropolitan TAFE
 // Description: Drone Service Application to log drones for service and repair
 
+//CHECK CLOSE TRACE LISTENER ON FORM CLOSE
+//CHECK MESSAGE BOXES TO APPEAR WHEN DEQUEUE OR PAYING
+//CHECK ADD COMMENTS TO XAML
+
+
 namespace DroneServiceApp
 {
     /// <summary>
@@ -234,8 +239,6 @@ namespace DroneServiceApp
             Trace.Listeners.Add(myTextListener);
         }
 
-        //CHECK CLOSE TRACE LISTENER ON FORM CLOSE
-        //CHECK MESSAGE BOXES TO APPEAR WHEN DEQUEUE OR PAYING
 
         #endregion
 
