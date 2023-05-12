@@ -11,23 +11,26 @@ using System.Globalization;
 namespace DroneServiceApp
 {
     // Q6.1 Create a separate class file to hold the data items of the Drone.
+    // Use separate getter and setter methods, ensure the attributes are private and the accessor methods are public. 
     public class Drone
     {
-        // CHECK CANT GET DISPLAY IN LIST VIEW IF PROPERTIES ARE PRIVATE
         #region Properties
         // ReSharper disable InconsistentNaming
-        public string ClientName { get; private set; }
-        public string DroneModel { get; private set; }
-        public string ServiceProblem { get; private set; }
-        public string ServicePriority { get; private set; }
-        public double ServiceCost { get; private set; }
-        public int ServiceTag { get; private set; }
+        private string ClientName;
+        private string DroneModel;
+        private string ServiceProblem;
+        private string ServicePriority;
+        private double ServiceCost;
+        private int ServiceTag;
         #endregion
 
         #region Constructors
-        public Drone()
+        public Drone(string clientName, string droneModel, string serviceProblem, string servicePriority)
         {
-      
+            ClientName = clientName;
+            DroneModel = droneModel;
+            ServiceProblem = serviceProblem;
+            ServicePriority = servicePriority;
         }
 
         public Drone(string clientName, string droneModel, string serviceProblem, double serviceCost, int serviceTag, string servicePriority)
@@ -39,9 +42,9 @@ namespace DroneServiceApp
             ServiceTag = serviceTag;
             ServicePriority = servicePriority;
         }
+
         #endregion
 
-        // Use separate getter and setter methods, ensure the attributes are private and the accessor methods are public. 
         #region Getters and Setters
 
         // Add suitable code to the Client Name accessor method so the data is formatted as Title case
@@ -51,9 +54,19 @@ namespace DroneServiceApp
             ClientName =  textInfo.ToTitleCase(newClientName.ToLower());
         }
 
+        public string GetClientName()
+        {
+            return ClientName;
+        }
+
         public void SetDroneModel(string newDroneModel)
         {
             DroneModel = newDroneModel;
+        }
+
+        public string GetDroneModel()
+        {
+            return DroneModel;
         }
 
         // Add suitable code to the Service Problem accessor method so the data is formatted as sentence case
@@ -63,9 +76,23 @@ namespace DroneServiceApp
             ServiceProblem = textInfo.ToTitleCase(serviceProblem[0].ToString()) + serviceProblem[1..].ToLower();
         }
 
+        public string GetServiceProblem()
+        {
+            return ServiceProblem;
+        }
+
         public void SetServiceCost(double serviceCost)
         {
+            if (serviceCost < 0)
+            {
+                ServiceCost = 100;
+            }
             ServiceCost = serviceCost;
+        }
+
+        public double GetServiceCost()
+        {
+            return ServiceCost;
         }
 
         public void SetServiceTag(int serviceTag)
@@ -80,14 +107,24 @@ namespace DroneServiceApp
             }
         }
 
+        public int GetServiceTag()
+        {
+            return ServiceTag;
+
+        }
+
         public void SetServicePriority(string servicePriority)
         {
           
             ServicePriority = servicePriority;
         }
 
+        public string GetServicePriority()
+        {
+            return ServicePriority;
+
+        }
+
         #endregion
-
     }
-
 }

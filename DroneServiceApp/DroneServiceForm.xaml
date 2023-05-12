@@ -85,11 +85,11 @@
             <ListView Grid.Row="1" x:Name="ListViewServiceExpress" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceExpress_SelectionChanged" ToolTip="Displays drone express service queue">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path=ClientName}"/>
-                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
-                        <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding Path= ServiceTag}"/>
-                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path= ServiceCost, StringFormat={}{0:C}}"/>
-                        <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding Path= ServiceProblem}"/>
+                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding ClientName}"/>
+                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding DroneModel}"/>
+                        <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding ServiceTag}"/>
+                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding ServiceCost, StringFormat={}{0:C}}"/>
+                        <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding ServiceProblem}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -98,11 +98,11 @@
             <ListView  Grid.Row="4"  x:Name="ListViewServiceRegular"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="6" SelectionChanged="ListViewServiceRegular_SelectionChanged" ToolTip="Displays drone regular service queue">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding Path= ClientName}"/>
-                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Path=DroneModel}"/>
-                        <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding Path=ServiceTag}"/>
-                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path=ServiceCost, StringFormat={}{0:C}}"/>
-                        <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding Path=ServiceProblem}"/>
+                        <GridViewColumn Header="Client Name"  DisplayMemberBinding="{Binding ClientName}"/>
+                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding DroneModel}"/>
+                        <GridViewColumn Header="Tag #" DisplayMemberBinding="{Binding ServiceTag}"/>
+                        <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding ServiceCost, StringFormat={}{0:C}}"/>
+                        <GridViewColumn Header="Problem" DisplayMemberBinding="{Binding ServiceProblem}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

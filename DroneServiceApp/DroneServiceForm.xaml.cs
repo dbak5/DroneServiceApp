@@ -23,8 +23,6 @@ namespace DroneServiceApp
     public partial class DroneServiceForm
     {
 
-        //CHECK ADD COMMENTS TO XAML
-
         public DroneServiceForm()
         {
             InitializeComponent();
@@ -88,6 +86,7 @@ namespace DroneServiceApp
         /// <param name="e"></param>
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
+            //CHECK REGEX USE AND ONLY 1 DECIMAL PLACE
             Trace.WriteLine("\nService cost textbox validation started\n");
             var text = TextBoxCost.Text;
             var textBox = (TextBox)sender;
@@ -156,7 +155,6 @@ namespace DroneServiceApp
                 e.Handled = true; 
             }
             Trace.Unindent();
-
             Trace.WriteLine("\nService cost textbox validation ended");
         }
 
@@ -275,26 +273,23 @@ namespace DroneServiceApp
                 Trace.WriteLine("\nService cost calculation ended");
             }
 
-            var newDrone = new Drone();
+            // public Drone(string clientName, string droneModel, string serviceProblem, string servicePriority)
+           
+            var newDrone = new Drone(clientName, droneModel,serviceProblem,servicePriority);
             {
                 SetDroneProperties(newDrone, clientName, droneModel, serviceProblem, serviceCost, serviceTag,
                     servicePriority);
             }
 
+            //nqueueService(Queue<Drone> queue, Drone drone, ListView listView, string message)
             // The new service item will be added to the appropriate Queue based on the Priority radio button. 
             switch (servicePriority)
             {
                 case "Regular":
-                    RegularQueue.Enqueue(newDrone);
-                    ListViewServiceRegular.Items.Add(newDrone);
-                    UpdateStatusStrip("Drone added to regular service queue");
-                    ClearTextBoxes();
+                    EnqueueService(RegularQueue, newDrone, ListViewServiceRegular, "Drone added to regular service queue");
                     break;
                 case "Express":
-                    ExpressQueue.Enqueue(newDrone);
-                    ListViewServiceExpress.Items.Add(newDrone);
-                    UpdateStatusStrip("Drone added to express service queue, 15% added to cost");
-                    ClearTextBoxes();
+                    EnqueueService(ExpressQueue, newDrone, ListViewServiceExpress, "Drone added to express service queue, 15% added to cost");
                     break;
             }
         }
@@ -318,7 +313,6 @@ namespace DroneServiceApp
             return "";
         }
 
-        //CHECK MESSAGE BOX FOR CONFIRMATION
         /// <summary>
         /// Q6.16 Create a double mouse click method that will delete a service item from the finished listbox and remove the same item from the List
         /// </summary>
@@ -352,7 +346,6 @@ namespace DroneServiceApp
             TextBoxModel.Clear();
             TextBoxProblem.Clear();
             TextBoxCost.Clear();
-            TextBoxServiceTag.Text = string.Empty;
             RadioButtonExpress.IsChecked = false;
             RadioButtonRegular.IsChecked = false;
         }
@@ -378,7 +371,6 @@ namespace DroneServiceApp
             newDrone.SetServicePriority(servicePriority);
         }
 
-        //CHECK MESSAGE BOX FOR CONFIRMATION
         /// <summary>
         /// Dequeue items, remove from list view and add to completed list and completed list view
         /// </summary>
@@ -405,6 +397,7 @@ namespace DroneServiceApp
             Trace.WriteLine("\nDequeue service item ended");
         }
 
+        //CHECK THIS IS NOT WORKING NOW
         /// <summary>
         /// Select item from list view and display in text boxes
         /// </summary>
@@ -413,14 +406,31 @@ namespace DroneServiceApp
         {
             var selectedItem = (Drone)listView.SelectedItem;
             if (selectedItem == null) return;
-            TextBoxClientName.Text = selectedItem.ClientName;
-            TextBoxModel.Text = selectedItem.DroneModel;
-            TextBoxProblem.Text = selectedItem.ServiceProblem;
-            TextBoxCost.Text = selectedItem.ServiceCost.ToString("C", CultureInfo.CurrentCulture);
-            TextBoxServiceTag.Text = selectedItem.ServiceTag.ToString();
-            SetRadioButton(selectedItem.ServicePriority);
+            TextBoxClientName.Text = selectedItem.GetClientName();
+            TextBoxModel.Text = selectedItem.GetDroneModel();
+            TextBoxProblem.Text = selectedItem.GetServiceProblem();
+            TextBoxCost.Text = selectedItem.GetServiceCost().ToString("C", CultureInfo.CurrentCulture);
+            TextBoxServiceTag.Text = selectedItem.GetServiceTag().ToString();
+            SetRadioButton(selectedItem.GetServicePriority());
         }
         
+        /// <summary>
+        /// Enqueue drone for servicing
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <param name="drone"></param>
+        /// <param name="listView"></param>
+        /// <param name="message"></param>
+        private void EnqueueService(Queue<Drone> queue, Drone drone, ListView listView, string message)
+        {
+            queue.Enqueue(drone);
+            listView.Items.Add(drone);
+            UpdateStatusStrip(message);
+            IncrementServiceTag();
+            DisplayQueue(queue, listView);
+            ClearTextBoxes();
+        }
+
         /// <summary>
         /// Update status strip
         /// </summary>
@@ -447,7 +457,6 @@ namespace DroneServiceApp
             }
         }
 
-        //CHECK CANT GET THIS TO WORK - PROPERTIES ARE PRIVATE
         /// <summary>
         /// Q6.8 Custom method to display regular service queue in ListView
         /// Q6.9 Custom method to display express service queue in ListView
@@ -456,18 +465,31 @@ namespace DroneServiceApp
         /// <param name="listView"></param>
         private static void DisplayQueue(IEnumerable<Drone> queue, ItemsControl listView)
         {
-            // Set the ItemsSource of the ListView
-            listView.ItemsSource = queue;
+            listView.Items.Clear();
+            foreach (Drone drone in queue)
+            {
+                listView.Items.Add(new
+                {
+                    ClientName = drone.GetClientName(),
+                    DroneModel = drone.GetDroneModel(),
+                    ServiceProblem = drone.GetServiceProblem(),
+                    ServiceCost = drone.GetServiceCost(),
+                    ServiceTag = drone.GetServiceTag()
+                }
+                );
+            }
         }
 
-        // CHECK THESE WITH LECTURER - WHY CREATE NUMERIC CONTROL WHEN THIS IS INCREMENTED AUTOMATICALLY
         /// <summary>
         /// Q6.11 Create a custom method to increment the service tag control, this method must be called inside the “AddNewItem” method before the new service item is added to a queue
         /// </summary>
         private void IncrementServiceTag()
         {
-
+            var currentTag = (int)TextBoxServiceTag.Value;
+            currentTag = currentTag + 10;
+            TextBoxServiceTag.Value = currentTag;
         }
+
         #endregion
 
         #region Booleans for errors
