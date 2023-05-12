@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 // Author: DaHye Baker
@@ -392,6 +391,8 @@ namespace DroneServiceApp
             Trace.WriteLine("\nRemoved item from regular or express list view");
 
             queue.Dequeue();
+            DisplayDrones(queue, listView);
+            DisplayDrones(FinishedList, ListViewFinishedItems);
             Trace.WriteLine("\nRemoved item from regular or express queue");
             Trace.Unindent();
             Trace.WriteLine("\nDequeue service item ended");
@@ -402,9 +403,9 @@ namespace DroneServiceApp
         /// Select item from list view and display in text boxes
         /// </summary>
         /// <param name="listView"></param>
-        private void SelectItemListView(Selector listView)
+        private void SelectItemListView(ListView listView)
         {
-            var selectedItem = (Drone)listView.SelectedItem;
+            var selectedItem = listView.SelectedItem as Drone;
             if (selectedItem == null) return;
             TextBoxClientName.Text = selectedItem.GetClientName();
             TextBoxModel.Text = selectedItem.GetDroneModel();
@@ -427,7 +428,7 @@ namespace DroneServiceApp
             listView.Items.Add(drone);
             UpdateStatusStrip(message);
             IncrementServiceTag();
-            DisplayQueue(queue, listView);
+            DisplayDrones(queue, listView);
             ClearTextBoxes();
         }
 
@@ -463,7 +464,7 @@ namespace DroneServiceApp
         /// </summary>
         /// <param name="queue"></param>
         /// <param name="listView"></param>
-        private static void DisplayQueue(IEnumerable<Drone> queue, ItemsControl listView)
+        private static void DisplayDrones(IEnumerable<Drone> queue, ItemsControl listView)
         {
             listView.Items.Clear();
             foreach (Drone drone in queue)
