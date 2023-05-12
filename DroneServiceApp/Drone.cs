@@ -25,12 +25,8 @@ namespace DroneServiceApp
         #endregion
 
         #region Constructors
-        public Drone(string clientName, string droneModel, string serviceProblem, string servicePriority)
+        public Drone()
         {
-            ClientName = clientName;
-            DroneModel = droneModel;
-            ServiceProblem = serviceProblem;
-            ServicePriority = servicePriority;
         }
 
         public Drone(string clientName, string droneModel, string serviceProblem, double serviceCost, int serviceTag, string servicePriority)

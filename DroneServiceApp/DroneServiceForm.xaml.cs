@@ -272,9 +272,7 @@ namespace DroneServiceApp
                 Trace.WriteLine("\nService cost calculation ended");
             }
 
-            // public Drone(string clientName, string droneModel, string serviceProblem, string servicePriority)
-           
-            var newDrone = new Drone(clientName, droneModel,serviceProblem,servicePriority);
+            var newDrone = new Drone();
             {
                 SetDroneProperties(newDrone, clientName, droneModel, serviceProblem, serviceCost, serviceTag,
                     servicePriority);
@@ -405,7 +403,8 @@ namespace DroneServiceApp
         /// <param name="listView"></param>
         private void SelectItemListView(ListView listView)
         {
-            var selectedItem = listView.SelectedItem as Drone;
+            var selectedItem = (Drone)listView.SelectedItem;
+            Debug.WriteLine(selectedItem);
             if (selectedItem == null) return;
             TextBoxClientName.Text = selectedItem.GetClientName();
             TextBoxModel.Text = selectedItem.GetDroneModel();
