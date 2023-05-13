@@ -39,6 +39,16 @@ namespace DroneServiceApp
             ServicePriority = servicePriority;
         }
 
+        public Drone(DroneViewModel drone)
+        {
+            if (drone == null) return;
+            ClientName = drone.ClientName;
+            DroneModel = drone.DroneModel;
+            ServiceProblem = drone.ServiceProblem;
+            ServiceCost = drone.ServiceCost;
+            ServiceTag = drone.ServiceTag;
+            ServicePriority = drone.ServicePriority;
+        }
         #endregion
 
         #region Getters and Setters
@@ -123,4 +133,30 @@ namespace DroneServiceApp
 
         #endregion
     }
+
+    public class DroneViewModel
+    {
+        public string ClientName { get; set; }
+        public string DroneModel { get; set; }
+        public string ServiceProblem { get; set; }
+        public string ServicePriority { get; set; }
+        public double ServiceCost { get; set; }
+        public int ServiceTag { get; set; }
+
+        public DroneViewModel()
+        {
+
+        }
+
+        public DroneViewModel(Drone drone)
+        {
+            ClientName = drone.GetClientName();
+            DroneModel = drone.GetDroneModel();
+            ServiceProblem = drone.GetServiceProblem();
+            ServiceCost = drone.GetServiceCost();
+            ServiceTag = drone.GetServiceTag();
+            ServicePriority = drone.GetServicePriority();
+        }
+
+    };
 }

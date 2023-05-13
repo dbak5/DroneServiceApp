@@ -49,7 +49,6 @@ namespace DroneServiceApp
         private void ButtonAddNew_Click(object sender, RoutedEventArgs e)
         {
             Trace.WriteLine("\nAdd New item method started");
-            var text = TextBoxCost.Text;
 
             Trace.Indent();
             Trace.WriteLine("\nChecking if any inputs are empty");
@@ -63,7 +62,7 @@ namespace DroneServiceApp
             Trace.Unindent();
             if (CheckInputEmpty(TextBoxClientName.Text, "Please enter a name", TextBoxClientName)) return;
             if (CheckInputEmpty(TextBoxModel.Text, "Please enter a drone model", TextBoxModel)) return;
-            if (CheckInputEmpty(TextBoxCost.Text.ToString(CultureInfo.CurrentCulture),
+            if (CheckInputEmpty(TextBoxCost.Text,
                     "Please enter a service cost", TextBoxCost)) return;
             if (CheckInputEmpty(GetServicePriority(), "Please specify service priority", RadioButtonRegular)) return;
             if (CheckInputEmpty(TextBoxServiceTag.Text, "Please tag service", TextBoxServiceTag)) return;
@@ -144,11 +143,11 @@ namespace DroneServiceApp
             var decimalIndex = text.IndexOf('.');
             var words = text.Split('.');
             var lastValue = words.Last();
-            if (decimalIndex >= 0 && lastValue.Length > 1)
+            if (decimalIndex >= 0 && lastValue.Length >= 1)
             {
                 Trace.Indent();
-                Trace.WriteLine("Code: decimalIndex >= 0 && lastValue.Length > 1");
-                Trace.WriteLine("Result: " + (decimalIndex >= 0 && lastValue.Length > 1));
+                Trace.WriteLine("Code: decimalIndex >= 0 && lastValue.Length >= 1");
+                Trace.WriteLine("Result: " + (decimalIndex >= 0 && lastValue.Length >= 1));
                 Trace.WriteLine("Input cancelled");
                 Trace.Unindent();
                 e.Handled = true; 
@@ -185,7 +184,6 @@ namespace DroneServiceApp
         private void ButtonRegularDequeue_Click(object sender, RoutedEventArgs e)
         {
             if (CheckQueueEmpty(RegularQueue)) return;
-            ClearTextBoxes();
             RemoveAndDequeue(RegularQueue, ListViewServiceRegular);
         }
 
@@ -197,7 +195,6 @@ namespace DroneServiceApp
         private void ButtonExpressDequeue_Click(object sender, RoutedEventArgs e)
         {
             if (CheckQueueEmpty(ExpressQueue)) return;
-            ClearTextBoxes();
             RemoveAndDequeue(ExpressQueue, ListViewServiceExpress);
         }
         
@@ -278,7 +275,6 @@ namespace DroneServiceApp
                     servicePriority);
             }
 
-            //nqueueService(Queue<Drone> queue, Drone drone, ListView listView, string message)
             // The new service item will be added to the appropriate Queue based on the Priority radio button. 
             switch (servicePriority)
             {
@@ -315,18 +311,15 @@ namespace DroneServiceApp
         /// </summary>
         private void RemoveFinishedItems()
         {
+
             Trace.WriteLine("\nRemove finished items starting\n");
-            var selectedItem = (Drone)ListViewFinishedItems.SelectedItem;
-            if (selectedItem == null)
-            {
-                UpdateStatusStrip("Please select item");
-                return;
-            }
-            FinishedList.Remove(selectedItem);
+            var drone =  SelectItemListView(ListViewFinishedItems);
+
+            FinishedList.Remove(drone);
             Trace.Indent();
             Trace.WriteLine("\nDrone removed from finished list");
 
-            ListViewFinishedItems.Items.Remove(selectedItem);
+            ListViewFinishedItems.Items.Remove(drone);
             Trace.WriteLine("\nDrone removed from finished list view");
             Trace.Unindent();
 
@@ -373,7 +366,7 @@ namespace DroneServiceApp
         /// </summary>
         /// <param name="queue"></param>
         /// <param name="listView"></param>
-        private void RemoveAndDequeue(Queue<Drone> queue, ItemsControl listView)
+        private void RemoveAndDequeue(Queue<Drone> queue, ListView listView)
         {
             Trace.WriteLine("\nDequeue service item started");
             Trace.Indent();
@@ -391,27 +384,28 @@ namespace DroneServiceApp
             queue.Dequeue();
             DisplayDrones(queue, listView);
             DisplayDrones(FinishedList, ListViewFinishedItems);
+            ClearTextBoxes();
+            UpdateStatusStrip("Drone moved to finished list");
             Trace.WriteLine("\nRemoved item from regular or express queue");
             Trace.Unindent();
             Trace.WriteLine("\nDequeue service item ended");
         }
 
-        //CHECK THIS IS NOT WORKING NOW
         /// <summary>
         /// Select item from list view and display in text boxes
         /// </summary>
         /// <param name="listView"></param>
-        private void SelectItemListView(ListView listView)
+        private Drone SelectItemListView(ListView listView)
         {
-            var selectedItem = (Drone)listView.SelectedItem;
-            Debug.WriteLine(selectedItem);
-            if (selectedItem == null) return;
-            TextBoxClientName.Text = selectedItem.GetClientName();
-            TextBoxModel.Text = selectedItem.GetDroneModel();
-            TextBoxProblem.Text = selectedItem.GetServiceProblem();
+            var selectedItem = (DroneViewModel)listView.SelectedItem;
+            var drone = new Drone(selectedItem);
+            TextBoxClientName.Text = drone.GetClientName();
+            TextBoxModel.Text = drone.GetDroneModel();
+            TextBoxProblem.Text = drone.GetServiceProblem();
+            TextBoxCost.Text = drone.GetServiceCost().ToString();
             TextBoxServiceTag.Text = drone.GetServiceTag().ToString();
-            TextBoxServiceTag.Text = selectedItem.GetServiceTag().ToString();
-            SetRadioButton(selectedItem.GetServicePriority());
+            SetRadioButton(drone.GetServicePriority());
+            return drone;
         }
         
         /// <summary>
@@ -421,7 +415,7 @@ namespace DroneServiceApp
         /// <param name="drone"></param>
         /// <param name="listView"></param>
         /// <param name="message"></param>
-        private void EnqueueService(Queue<Drone> queue, Drone drone, ListView listView, string message)
+        private void EnqueueService(Queue<Drone> queue, Drone drone, ItemsControl listView, string message)
         {
             queue.Enqueue(drone);
             listView.Items.Add(drone);
@@ -466,17 +460,9 @@ namespace DroneServiceApp
         private static void DisplayDrones(IEnumerable<Drone> queue, ItemsControl listView)
         {
             listView.Items.Clear();
-            foreach (Drone drone in queue)
+            foreach (var drone in queue)
             {
-                listView.Items.Add(new
-                {
-                    ClientName = drone.GetClientName(),
-                    DroneModel = drone.GetDroneModel(),
-                    ServiceProblem = drone.GetServiceProblem(),
-                    ServiceCost = drone.GetServiceCost(),
-                    ServiceTag = drone.GetServiceTag()
-                }
-                );
+                listView.Items.Add(new DroneViewModel(drone));
             }
         }
 
