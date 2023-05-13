@@ -409,7 +409,7 @@ namespace DroneServiceApp
             TextBoxClientName.Text = selectedItem.GetClientName();
             TextBoxModel.Text = selectedItem.GetDroneModel();
             TextBoxProblem.Text = selectedItem.GetServiceProblem();
-            TextBoxCost.Text = selectedItem.GetServiceCost().ToString("C", CultureInfo.CurrentCulture);
+            TextBoxServiceTag.Text = drone.GetServiceTag().ToString();
             TextBoxServiceTag.Text = selectedItem.GetServiceTag().ToString();
             SetRadioButton(selectedItem.GetServicePriority());
         }
