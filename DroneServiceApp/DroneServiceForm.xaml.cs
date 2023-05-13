@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -21,7 +20,6 @@ namespace DroneServiceApp
     /// </summary>
     public partial class DroneServiceForm
     {
-
         public DroneServiceForm()
         {
             InitializeComponent();
@@ -209,6 +207,16 @@ namespace DroneServiceApp
         }
 
         /// <summary>
+        /// Select item from list view and display in text boxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewFinishedItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectItemListView(ListViewFinishedItems);
+        }
+
+        /// <summary>
         /// Button to remove items from completed items list
         /// </summary>
         /// <param name="sender"></param>
@@ -307,24 +315,27 @@ namespace DroneServiceApp
         }
 
         /// <summary>
-        /// Q6.16 Create a double mouse click method that will delete a service item from the finished listbox and remove the same item from the List
+        /// Delete a service item from the finished listbox and remove the same item from the List
         /// </summary>
         private void RemoveFinishedItems()
         {
-
             Trace.WriteLine("\nRemove finished items starting\n");
             var drone =  SelectItemListView(ListViewFinishedItems);
+           var existing = FinishedList.FirstOrDefault(x => x.GetClientName() == drone.GetClientName());
+           if (existing == null) return;
 
-            FinishedList.Remove(drone);
+            FinishedList.Remove(existing);
             Trace.Indent();
             Trace.WriteLine("\nDrone removed from finished list");
 
-            ListViewFinishedItems.Items.Remove(drone);
+            ListViewFinishedItems.Items.Remove(existing);
             Trace.WriteLine("\nDrone removed from finished list view");
             Trace.Unindent();
 
             Trace.WriteLine("\nRemove finished items ended");
             UpdateStatusStrip("Drone removed from finished items");
+            DisplayDrones(FinishedList, ListViewFinishedItems);
+            ClearTextBoxes();
         }
 
         /// <summary>

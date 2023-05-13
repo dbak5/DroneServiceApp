@@ -118,7 +118,7 @@
 
             <Label Grid.Column="0" Grid.Row="0" x:Name="LabelFinishedList" Margin="3" Content="Drones completed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <ListView Grid.Column="0" Grid.Row="1" x:Name="ListViewFinishedItems"  Margin="6" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ListViewFinishedItems_MouseDoubleClick" ToolTip="Displays drones finished, awaiting payment">
+            <ListView Grid.Column="0" Grid.Row="1" x:Name="ListViewFinishedItems"  Margin="6" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ListViewFinishedItems_MouseDoubleClick" ToolTip="Displays drones finished, awaiting payment" SelectionChanged="ListViewFinishedItems_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
